@@ -9,6 +9,7 @@ import { CartProvider } from "./context/CartContext";
 import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
 import CategoryProductsPage from "./pages/CategoryProductsPage";
+import ProductPage from "./pages/ProductPage";
 import OrdersPage from "./pages/OrdersPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
@@ -29,6 +30,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/category" element={<CategoryPage />} />
               <Route path="/category/:categoryId" element={<CategoryProductsPage />} />
+              <Route path="/product/:productId" element={<ProductPage />} />
               <Route path="/orders" element={<OrdersPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/checkout" element={<CheckoutPage />} />

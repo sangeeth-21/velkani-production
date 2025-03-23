@@ -70,6 +70,7 @@ export const english = {
   'subtotal': 'Subtotal',
   'checkout': 'Checkout',
   'total': 'Total',
+  'add_to_cart': 'Add to Cart',
   
   // Checkout
   'order_summary': 'Order Summary',
@@ -97,5 +98,12 @@ export const english = {
   'change': 'Change',
   'verify_continue': 'Verify & Continue',
   'verifying': 'Verifying...',
-  'resend_otp': 'Resend OTP'
+  'resend_otp': 'Resend OTP',
+  
+  // Product Page
+  'product_details': 'Product Details',
+  'product_description': 'Description',
+  'product_features': 'Features',
+  'select_weight': 'Weight',
+  'quantity': 'Quantity'
 };

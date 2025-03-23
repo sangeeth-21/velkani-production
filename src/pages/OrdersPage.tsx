@@ -1,10 +1,11 @@
-
 import React from 'react';
 import BottomNavigation from '../components/BottomNavigation';
 import { Package, ArrowLeft, Clock, CheckCircle, Truck, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { Badge } from "@/components/ui/badge";
+import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
+import CartButton from '../components/CartButton';
 
 // Mock orders data for demonstration
 const orders = [
@@ -75,11 +76,17 @@ const OrdersPage = () => {
   
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="pt-4 px-4 flex items-center">
-        <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <h1 className="text-xl font-medium">{t('orders_title')}</h1>
+      <div className="pt-4 px-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="text-xl font-medium">{t('orders_title')}</h1>
+        </div>
+        <div className="flex items-center space-x-2">
+          <GlobalLanguageSwitcher />
+          <CartButton />
+        </div>
       </div>
       
       <main className="flex-1 py-4 px-4 pb-20">

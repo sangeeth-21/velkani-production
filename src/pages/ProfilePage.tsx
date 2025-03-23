@@ -4,13 +4,17 @@ import BottomNavigation from '../components/BottomNavigation';
 import { useLanguage } from '../context/LanguageContext';
 import { User, Settings, ShoppingBag, HelpCircle, Info } from 'lucide-react';
 import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
+import CartButton from '../components/CartButton';
 
 const ProfilePage = () => {
   const { t } = useLanguage();
   
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <GlobalLanguageSwitcher />
+      <div className="pt-4 px-4 flex items-center justify-end space-x-2">
+        <GlobalLanguageSwitcher />
+        <CartButton />
+      </div>
       
       <main className="flex-1 pt-6 pb-16 content-container">
         <h1 className="text-xl font-medium mb-4">{t('profile_title')}</h1>
