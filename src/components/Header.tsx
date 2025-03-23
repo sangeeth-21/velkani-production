@@ -1,46 +1,20 @@
-
 import React from 'react';
 import { Phone, MessageCircle, Languages } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useLocation } from 'react-router-dom';
-
 const Header = () => {
-  const { t, language, setLanguage } = useLanguage();
+  const {
+    t,
+    language,
+    setLanguage
+  } = useLanguage();
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
-  return (
-    <>
-      {isHomePage && (
-        <header className="fixed top-0 left-0 right-0 z-50 glass shadow-sm animate-fade-in h-[20vh] flex flex-col">
-          <div className="flex justify-end px-4 py-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="flex items-center gap-1">
-                  <Languages className="h-4 w-4" />
-                  <span className="text-xs capitalize">{language}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setLanguage('english')}>
-                  {t('language_english')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage('tamil')}>
-                  {t('language_tamil')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage('hindi')}>
-                  {t('language_hindi')}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+  return <>
+      {isHomePage && <header className="fixed top-0 left-0 right-0 z-50 glass shadow-sm animate-fade-in h-[20vh] flex flex-col">
+          
           
           <div className="flex-1 flex items-center justify-center">
             <h1 className="text-2xl font-medium">Middle Shop</h1>
@@ -59,10 +33,7 @@ const Header = () => {
               </a>
             </div>
           </div>
-        </header>
-      )}
-    </>
-  );
+        </header>}
+    </>;
 };
-
 export default Header;
