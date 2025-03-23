@@ -1,18 +1,18 @@
 
 import React from 'react';
-import Header from '../components/Header';
 import BottomNavigation from '../components/BottomNavigation';
 import { useLanguage } from '../context/LanguageContext';
-import { User, Settings, ShoppingBag, Languages, HelpCircle, Info } from 'lucide-react';
+import { User, Settings, ShoppingBag, HelpCircle, Info } from 'lucide-react';
+import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
 
 const ProfilePage = () => {
-  const { t, language, setLanguage } = useLanguage();
+  const { t } = useLanguage();
   
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header />
+      <GlobalLanguageSwitcher />
       
-      <main className="flex-1 pt-16 pb-16 content-container">
+      <main className="flex-1 pt-6 pb-16 content-container">
         <h1 className="text-xl font-medium mb-4">{t('profile_title')}</h1>
         
         {/* Profile content */}
@@ -35,32 +35,6 @@ const ProfilePage = () => {
               <Settings className="h-5 w-5 mr-3 text-muted-foreground" />
               <span>{t('profile_edit')}</span>
             </button>
-            
-            <div className="w-full flex items-center p-4 hover:bg-secondary/50 transition-colors border-t">
-              <Languages className="h-5 w-5 mr-3 text-muted-foreground" />
-              <span>{t('profile_language')}</span>
-              
-              <div className="ml-auto flex space-x-2">
-                <button 
-                  onClick={() => setLanguage('english')} 
-                  className={`h-8 w-8 rounded-full flex items-center justify-center text-xs ${language === 'english' ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}
-                >
-                  EN
-                </button>
-                <button 
-                  onClick={() => setLanguage('tamil')} 
-                  className={`h-8 w-8 rounded-full flex items-center justify-center text-xs ${language === 'tamil' ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}
-                >
-                  TA
-                </button>
-                <button 
-                  onClick={() => setLanguage('hindi')} 
-                  className={`h-8 w-8 rounded-full flex items-center justify-center text-xs ${language === 'hindi' ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}
-                >
-                  HI
-                </button>
-              </div>
-            </div>
             
             <button className="w-full flex items-center p-4 hover:bg-secondary/50 transition-colors border-t">
               <ShoppingBag className="h-5 w-5 mr-3 text-muted-foreground" />

@@ -4,11 +4,13 @@ import Header from '../components/Header';
 import BottomNavigation from '../components/BottomNavigation';
 import OfferCarousel from '../components/OfferCarousel';
 import CategorySection from '../components/CategorySection';
+import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
+      <GlobalLanguageSwitcher />
       
       <main className="flex-1 pt-[20vh] pb-16 overflow-auto">
         <OfferCarousel />
