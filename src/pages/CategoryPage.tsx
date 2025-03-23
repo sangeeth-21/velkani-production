@@ -5,7 +5,6 @@ import { ArrowLeft, Leaf, Apple, ShoppingCart, Box, Home as HomeIcon, Tag } from
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
-import CartButton from '../components/CartButton';
 
 // Categories data (matching with CategorySection)
 const categories = [
@@ -65,18 +64,14 @@ const CategoryPage = () => {
   
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="pt-4 px-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
-          <h1 className="text-xl font-medium">{t('category_all')}</h1>
-        </div>
-        <div className="flex items-center space-x-2">
-          <GlobalLanguageSwitcher />
-          <CartButton />
-        </div>
+      <div className="pt-4 px-4 flex items-center">
+        <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
+        <h1 className="text-xl font-medium">{t('category_all')}</h1>
       </div>
+      
+      <GlobalLanguageSwitcher />
       
       <main className="flex-1 py-4 px-4 content-container">
         {/* Featured offers category at the top */}

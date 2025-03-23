@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -171,7 +170,7 @@ const CategoryProductsPage = () => {
           </Link>
           <h1 className="text-xl font-medium">{t(categoryTitles[safeCategory])}</h1>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center">
           <GlobalLanguageSwitcher />
           <CartButton />
         </div>
