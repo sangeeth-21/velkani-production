@@ -11,8 +11,7 @@ const Index = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       
-      <main className="flex-1 pt-24 pb-16 overflow-auto">
-        <HeroSection />
+      <main className="flex-1 pt-[30vh] pb-16 overflow-auto">
         <OfferCarousel />
         <CategorySection />
       </main>
