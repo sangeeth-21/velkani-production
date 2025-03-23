@@ -22,15 +22,22 @@ export const hindi = {
   'category_grocery': 'किराना',
   'category_plastic': 'प्लास्टिक उत्पाद',
   'category_living': 'जीवन आवश्यकताएं',
+  'category_offers': 'विशेष ऑफर',
   
   // Offers
   'offer_title': 'विशेष ऑफर',
   'offer_discount': '{discount}% तक की छूट',
   'offer_limited': 'सीमित समय का ऑफर',
+  'special_offer': 'विशेष ऑफर',
   
   // Common
   'see_all': 'सभी देखें',
   'back': 'वापस',
+  'add': 'जोड़ें',
+  'sort': 'क्रमबद्ध करें',
+  'filter': 'फ़िल्टर',
+  'items': 'आइटम',
+  'ratings': 'रेटिंग',
   
   // Language
   'language': 'भाषा',
@@ -45,6 +52,7 @@ export const hindi = {
   'order_status_confirmed': 'पुष्टि की गई',
   'order_status_shipped': 'भेज दिया गया',
   'order_status_delivered': 'डिलीवर किया गया',
+  'order_total': 'कुल',
   
   // Profile
   'profile_title': 'मेरी प्रोफाइल',

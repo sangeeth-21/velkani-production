@@ -22,15 +22,22 @@ export const tamil = {
   'category_grocery': 'மளிகை',
   'category_plastic': 'பிளாஸ்டிக் பொருட்கள்',
   'category_living': 'வாழ்க்கைத் தேவைகள்',
+  'category_offers': 'சிறப்பு சலுகைகள்',
   
   // Offers
   'offer_title': 'சிறப்பு சலுகைகள்',
   'offer_discount': '{discount}% வரை தள்ளுபடி',
   'offer_limited': 'குறுகிய கால சலுகை',
+  'special_offer': 'சிறப்பு சலுகை',
   
   // Common
   'see_all': 'அனைத்தையும் பார்க்க',
   'back': 'பின்செல்',
+  'add': 'சேர்',
+  'sort': 'வரிசைப்படுத்து',
+  'filter': 'வடிகட்டு',
+  'items': 'பொருட்கள்',
+  'ratings': 'மதிப்பீடுகள்',
   
   // Language
   'language': 'மொழி',
@@ -45,6 +52,7 @@ export const tamil = {
   'order_status_confirmed': 'உறுதிப்படுத்தப்பட்டது',
   'order_status_shipped': 'அனுப்பப்பட்டது',
   'order_status_delivered': 'வழங்கப்பட்டது',
+  'order_total': 'மொத்தம்',
   
   // Profile
   'profile_title': 'எனது சுயவிவரம்',

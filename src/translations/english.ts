@@ -28,10 +28,16 @@ export const english = {
   'offer_title': 'Special Offers',
   'offer_discount': 'Up to {discount}% off',
   'offer_limited': 'Limited time offer',
+  'special_offer': 'Special Offer',
   
   // Common
   'see_all': 'See All',
   'back': 'Back',
+  'add': 'Add',
+  'sort': 'Sort',
+  'filter': 'Filter',
+  'items': 'Items',
+  'ratings': 'Ratings',
   
   // Language
   'language': 'Language',

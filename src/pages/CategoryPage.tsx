@@ -4,6 +4,7 @@ import BottomNavigation from '../components/BottomNavigation';
 import { ArrowLeft, Leaf, Apple, ShoppingCart, Box, Home as HomeIcon, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
 
 // Categories data (matching with CategorySection)
 const categories = [
@@ -70,7 +71,9 @@ const CategoryPage = () => {
         <h1 className="text-xl font-medium">{t('category_all')}</h1>
       </div>
       
-      <main className="flex-1 py-4 content-container">
+      <GlobalLanguageSwitcher />
+      
+      <main className="flex-1 py-4 px-4 content-container">
         {/* Featured offers category at the top */}
         {categories.filter(cat => cat.featured).map((category) => (
           <Link

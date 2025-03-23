@@ -1,11 +1,20 @@
 
 import React from 'react';
-import { ChevronRight, Leaf, Apple, ShoppingCart, Box, Home as HomeIcon } from 'lucide-react';
+import { ChevronRight, Leaf, Apple, ShoppingCart, Box, Home as HomeIcon, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 // Updated category data
 const categories = [
+  {
+    id: 'offers',
+    title: 'category_offers',
+    icon: Tag,
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-50',
+    image: 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    featured: true
+  },
   {
     id: 'vegetables',
     title: 'category_vegetables',
@@ -62,7 +71,7 @@ const CategorySection = () => {
       </div>
       
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {categories.map((category, index) => (
+        {categories.filter(category => !category.featured).slice(0, 5).map((category, index) => (
           <Link
             key={category.id}
             to={`/category/${category.id}`}
