@@ -17,11 +17,11 @@ export const hindi = {
   // Category Section
   'category_title': 'श्रेणी द्वारा खरीदारी करें',
   'category_all': 'सभी श्रेणियाँ',
-  'category_electronics': 'इलेक्ट्रॉनिक्स',
-  'category_fashion': 'फैशन',
+  'category_vegetables': 'सब्जियां',
+  'category_fruits': 'फल',
   'category_grocery': 'किराना',
-  'category_home': 'घर',
-  'category_beauty': 'सौंदर्य',
+  'category_plastic': 'प्लास्टिक उत्पाद',
+  'category_living': 'जीवन आवश्यकताएं',
   
   // Offers
   'offer_title': 'विशेष ऑफर',

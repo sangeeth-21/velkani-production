@@ -17,11 +17,11 @@ export const english = {
   // Category Section
   'category_title': 'Shop by Category',
   'category_all': 'All Categories',
-  'category_electronics': 'Electronics',
-  'category_fashion': 'Fashion',
+  'category_vegetables': 'Vegetables',
+  'category_fruits': 'Fruits',
   'category_grocery': 'Grocery',
-  'category_home': 'Home',
-  'category_beauty': 'Beauty',
+  'category_plastic': 'Plastic Products',
+  'category_living': 'Living Needs',
   
   // Offers
   'offer_title': 'Special Offers',

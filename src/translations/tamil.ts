@@ -17,11 +17,11 @@ export const tamil = {
   // Category Section
   'category_title': 'வகைகளின்படி ஷாப்பிங் செய்யுங்கள்',
   'category_all': 'அனைத்து வகைகள்',
-  'category_electronics': 'மின்னணு சாதனங்கள்',
-  'category_fashion': 'ஆடை',
+  'category_vegetables': 'காய்கறிகள்',
+  'category_fruits': 'பழங்கள்',
   'category_grocery': 'மளிகை',
-  'category_home': 'வீடு',
-  'category_beauty': 'அழகு சாதனங்கள்',
+  'category_plastic': 'பிளாஸ்டிக் பொருட்கள்',
+  'category_living': 'வாழ்க்கைத் தேவைகள்',
   
   // Offers
   'offer_title': 'சிறப்பு சலுகைகள்',
