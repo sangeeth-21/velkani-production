@@ -88,7 +88,7 @@ const CategoryPage = () => {
               </div>
               <div>
                 <h3 className="font-medium">{t(category.title)}</h3>
-                <p className="text-sm text-muted-foreground">{t('offer_discount', { discount: 50 })}</p>
+                <p className="text-sm text-muted-foreground">{t('offer_limited')}</p>
               </div>
             </div>
             <Tag className={`h-6 w-6 ${category.color}`} />
