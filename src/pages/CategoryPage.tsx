@@ -66,14 +66,14 @@ const CategoryPage = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <div className="pt-4 px-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
+        <div className="flex items-center gap-4">
+          <Link to="/" className="p-1 rounded-full bg-secondary">
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <h1 className="text-xl font-medium">{t('category_all')}</h1>
-        </div>
-        <div className="flex items-center gap-2">
           <GlobalLanguageSwitcher />
+        </div>
+        <div className="flex items-center">
+          <h1 className="text-xl font-medium mr-4">{t('category_all')}</h1>
           <CartButton />
         </div>
       </div>

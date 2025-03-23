@@ -11,8 +11,10 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+      <div className="fixed top-4 left-4 z-50">
         <GlobalLanguageSwitcher />
+      </div>
+      <div className="fixed top-4 right-4 z-50">
         <CartButton />
       </div>
       

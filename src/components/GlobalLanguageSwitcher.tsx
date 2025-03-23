@@ -21,7 +21,7 @@ const GlobalLanguageSwitcher = () => {
           <span className="text-xs capitalize">{language}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="start">
         <DropdownMenuItem onClick={() => setLanguage('english')}>
           {t('language_english')}
         </DropdownMenuItem>
