@@ -1,10 +1,17 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
-import { Star, ChevronDown, Filter, ArrowUpDown } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Star, ChevronDown, Filter, ArrowUpDown, ShoppingCart } from 'lucide-react';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from './ui/select';
+import { useCart } from '../context/CartContext';
 
 type Product = {
   id: string;
@@ -15,6 +22,7 @@ type Product = {
   weight: string;
   price: number;
   image: string;
+  weightOptions?: Array<{value: string, price: number}>
 };
 
 type ProductListViewProps = {
@@ -24,12 +32,44 @@ type ProductListViewProps = {
 
 const ProductListView = ({ categoryId, products }: ProductListViewProps) => {
   const { t } = useLanguage();
+  const { addToCart } = useCart();
+  
+  // Enhance products with weight options if they don't have them
+  const enhancedProducts = products.map(product => {
+    if (!product.weightOptions) {
+      // Create default weight options based on the single weight provided
+      return {
+        ...product,
+        weightOptions: [
+          { value: product.weight, price: product.price },
+          { value: '1 kg', price: product.price * 2 },
+          { value: '2 kg', price: product.price * 3.5 },
+        ]
+      };
+    }
+    return product;
+  });
+  
+  const handleAddToCart = (product: Product, selectedWeight?: string) => {
+    const weightToUse = selectedWeight || product.weight;
+    const weightOption = product.weightOptions?.find(opt => opt.value === weightToUse);
+    const priceToUse = weightOption ? weightOption.price : product.price;
+    
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: priceToUse,
+      weight: weightToUse,
+      image: product.image,
+      quantity: 1
+    });
+  };
   
   return (
     <div className="animate-fade-in">
       <div className="flex justify-between items-center mb-4 sticky top-0 bg-background z-10 py-2">
         <div className="text-sm text-muted-foreground">
-          {products.length} {t('items')}
+          {enhancedProducts.length} {t('items')}
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" className="flex items-center gap-1">
@@ -44,7 +84,7 @@ const ProductListView = ({ categoryId, products }: ProductListViewProps) => {
       </div>
       
       <div className="space-y-4">
-        {products.map((product) => (
+        {enhancedProducts.map((product) => (
           <Card key={product.id} className="overflow-hidden shadow-sm">
             <CardContent className="p-0">
               <div className="flex">
@@ -66,15 +106,28 @@ const ProductListView = ({ categoryId, products }: ProductListViewProps) => {
                       </div>
                       <span className="text-xs text-muted-foreground">{product.totalRatings} {t('ratings')}</span>
                     </div>
-                    <div className="flex items-center text-sm">
-                      <span>{product.weight}</span>
-                      <ChevronDown size={16} className="ml-1" />
-                    </div>
+                    
+                    <Select defaultValue={product.weightOptions?.[0].value}>
+                      <SelectTrigger className="flex items-center text-sm h-8 w-32">
+                        <SelectValue placeholder={product.weight} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {product.weightOptions?.map((option, idx) => (
+                          <SelectItem key={idx} value={option.value}>
+                            {option.value} - ₹{option.price}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                   
                   <div className="flex items-center justify-between mt-2">
                     <div className="font-bold">₹{product.price}</div>
-                    <Button variant="destructive" size="sm">
+                    <Button 
+                      variant="destructive" 
+                      size="sm"
+                      onClick={() => handleAddToCart(product)}
+                    >
                       {t('add')}
                     </Button>
                   </div>

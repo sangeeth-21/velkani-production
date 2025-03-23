@@ -5,12 +5,15 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
+import { CartProvider } from "./context/CartContext";
 import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
 import CategoryProductsPage from "./pages/CategoryProductsPage";
 import OrdersPage from "./pages/OrdersPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
+import CheckoutPage from "./pages/CheckoutPage";
+import LoginPage from "./pages/LoginPage";
 
 const queryClient = new QueryClient();
 
@@ -18,18 +21,22 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <LanguageProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/category" element={<CategoryPage />} />
-            <Route path="/category/:categoryId" element={<CategoryProductsPage />} />
-            <Route path="/orders" element={<OrdersPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <CartProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/category" element={<CategoryPage />} />
+              <Route path="/category/:categoryId" element={<CategoryProductsPage />} />
+              <Route path="/orders" element={<OrdersPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
       </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>

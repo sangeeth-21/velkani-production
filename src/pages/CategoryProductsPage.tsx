@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -6,6 +5,7 @@ import BottomNavigation from '../components/BottomNavigation';
 import ProductListView from '../components/ProductListView';
 import { useLanguage } from '../context/LanguageContext';
 import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
+import CartButton from '../components/CartButton';
 
 // Mock products data
 const mockProducts = {
@@ -163,14 +163,18 @@ const CategoryProductsPage = () => {
   
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="pt-4 px-4 flex items-center">
-        <Link to="/category" className="mr-2 p-1 rounded-full bg-secondary">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <h1 className="text-xl font-medium">{t(categoryTitles[safeCategory])}</h1>
+      <div className="pt-4 px-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <Link to="/category" className="mr-2 p-1 rounded-full bg-secondary">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="text-xl font-medium">{t(categoryTitles[safeCategory])}</h1>
+        </div>
+        <div className="flex items-center">
+          <GlobalLanguageSwitcher />
+          <CartButton />
+        </div>
       </div>
-      
-      <GlobalLanguageSwitcher />
       
       <main className="flex-1 px-4 py-4 pb-16">
         <ProductListView categoryId={safeCategory} products={products} />
