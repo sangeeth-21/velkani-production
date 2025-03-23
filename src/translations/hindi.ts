@@ -60,5 +60,40 @@ export const hindi = {
   'profile_language': 'भाषा सेटिंग्स',
   'profile_orders': 'ऑर्डर इतिहास',
   'profile_help': 'मदद और समर्थन',
-  'profile_about': 'हमारे बारे में'
+  'profile_about': 'हमारे बारे में',
+  
+  // Cart
+  'cart': 'शॉपिंग कार्ट',
+  'cart_empty': 'आपका कार्ट खाली है',
+  'add_items': 'आगे बढ़ने के लिए अपने कार्ट में आइटम जोड़ें',
+  'continue_shopping': 'शॉपिंग जारी रखें',
+  'subtotal': 'उप-कुल',
+  'checkout': 'चेकआउट',
+  'total': 'कुल',
+  
+  // Checkout
+  'order_summary': 'ऑर्डर सारांश',
+  'delivery_details': 'डिलीवरी विवरण',
+  'delivery_method': 'डिलीवरी विधि',
+  'shop_pickup': 'दुकान से पिकअप',
+  'door_delivery': 'घर पर डिलीवरी',
+  'available_above_2000': '₹2000 से अधिक के ऑर्डर के लिए उपलब्ध',
+  'pickup_time': 'पिकअप समय',
+  'name': 'नाम',
+  'enter_name': 'अपना पूरा नाम दर्ज करें',
+  'phone': 'फोन',
+  'enter_phone': 'अपना फोन नंबर दर्ज करें',
+  'address': 'पता',
+  'enter_address': 'अपना पूरा पता दर्ज करें',
+  'pincode': 'पिन कोड',
+  'enter_pincode': 'अपना पिन कोड दर्ज करें',
+  'place_order': 'ऑर्डर करें',
+  'placing_order': 'ऑर्डर हो रहा है...',
+  'name_required': 'नाम आवश्यक है',
+  'valid_phone_required': 'कृपया एक वैध फोन नंबर दर्ज करें',
+  'address_required': 'पता आवश्यक है',
+  'valid_pincode_required': 'कृपया एक वैध 6-अंकों का पिन कोड दर्ज करें',
+  'order_success': 'ऑर्डर सफलतापूर्वक दिया गया',
+  'order_pickup_success': 'आपका ऑर्डर दुकान से पिकअप के लिए दिया गया है।',
+  'order_delivery_success': 'आपका ऑर्डर घर पर डिलीवरी के लिए दिया गया है।'
 };

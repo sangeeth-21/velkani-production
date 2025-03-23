@@ -60,5 +60,40 @@ export const tamil = {
   'profile_language': 'மொழி அமைப்புகள்',
   'profile_orders': 'ஆர்டர் வரலாறு',
   'profile_help': 'உதவி & ஆதரவு',
-  'profile_about': 'எங்களைப் பற்றி'
+  'profile_about': 'எங்களைப் பற்றி',
+  
+  // Cart
+  'cart': 'ஷாப்பிங் கார்ட்',
+  'cart_empty': 'உங்கள் கார்ட் காலியாக உள்ளது',
+  'add_items': 'தொடர கார்டில் பொருட்களை சேர்க்கவும்',
+  'continue_shopping': 'ஷாப்பிங் தொடரவும்',
+  'subtotal': 'துணை மொத்தம்',
+  'checkout': 'செக்அவுட்',
+  'total': 'மொத்தம்',
+  
+  // Checkout
+  'order_summary': 'ஆர்டர் சுருக்கம்',
+  'delivery_details': 'டெலிவரி விவரங்கள்',
+  'delivery_method': 'டெலிவரி முறை',
+  'shop_pickup': 'கடையில் பெறுதல்',
+  'door_delivery': 'வீட்டுக்கு டெலிவரி',
+  'available_above_2000': '₹2000க்கு மேல் ஆர்டர்களுக்கு கிடைக்கும்',
+  'pickup_time': 'பெறும் நேரம்',
+  'name': 'பெயர்',
+  'enter_name': 'உங்கள் முழு பெயரை உள்ளிடவும்',
+  'phone': 'தொலைபேசி',
+  'enter_phone': 'உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்',
+  'address': 'முகவரி',
+  'enter_address': 'உங்கள் முழு முகவரியை உள்ளிடவும்',
+  'pincode': 'அஞ்சல் குறியீடு',
+  'enter_pincode': 'உங்கள் அஞ்சல் குறியீட்டை உள்ளிடவும்',
+  'place_order': 'ஆர்டர் செய்',
+  'placing_order': 'ஆர்டர் செய்கிறது...',
+  'name_required': 'பெயர் தேவை',
+  'valid_phone_required': 'சரியான தொலைபேசி எண்ணை உள்ளிடவும்',
+  'address_required': 'முகவரி தேவை',
+  'valid_pincode_required': 'சரியான 6-இலக்க அஞ்சல் குறியீட்டை உள்ளிடவும்',
+  'order_success': 'ஆர்டர் வெற்றிகரமாக வைக்கப்பட்டது',
+  'order_pickup_success': 'உங்கள் ஆர்டர் கடையில் பெறுவதற்காக வைக்கப்பட்டுள்ளது.',
+  'order_delivery_success': 'உங்கள் ஆர்டர் வீட்டுக்கு டெலிவரிக்காக வைக்கப்பட்டுள்ளது.'
 };

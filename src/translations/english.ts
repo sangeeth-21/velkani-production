@@ -74,6 +74,11 @@ export const english = {
   // Checkout
   'order_summary': 'Order Summary',
   'delivery_details': 'Delivery Details',
+  'delivery_method': 'Delivery Method',
+  'shop_pickup': 'Shop Pickup',
+  'door_delivery': 'Door Delivery',
+  'available_above_2000': 'Available for orders above ₹2000',
+  'pickup_time': 'Pickup Time',
   'name': 'Name',
   'enter_name': 'Enter your full name',
   'phone': 'Phone',
@@ -84,6 +89,13 @@ export const english = {
   'enter_pincode': 'Enter your PIN code',
   'place_order': 'Place Order',
   'placing_order': 'Placing Order...',
+  'name_required': 'Name is required',
+  'valid_phone_required': 'Please enter a valid phone number',
+  'address_required': 'Address is required',
+  'valid_pincode_required': 'Please enter a valid 6-digit PIN code',
+  'order_success': 'Order Placed Successfully',
+  'order_pickup_success': 'Your order has been placed for pickup at the shop.',
+  'order_delivery_success': 'Your order has been placed for doorstep delivery.',
   
   // Login
   'login': 'Login',
