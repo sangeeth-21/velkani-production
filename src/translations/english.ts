@@ -22,6 +22,7 @@ export const english = {
   'category_grocery': 'Grocery',
   'category_plastic': 'Plastic Products',
   'category_living': 'Living Needs',
+  'category_offers': 'Special Offers',
   
   // Offers
   'offer_title': 'Special Offers',
@@ -45,6 +46,7 @@ export const english = {
   'order_status_confirmed': 'Confirmed',
   'order_status_shipped': 'Shipped',
   'order_status_delivered': 'Delivered',
+  'order_total': 'Total',
   
   // Profile
   'profile_title': 'My Profile',

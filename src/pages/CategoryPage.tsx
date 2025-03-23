@@ -1,13 +1,21 @@
 
 import React from 'react';
-import Header from '../components/Header';
 import BottomNavigation from '../components/BottomNavigation';
-import { ArrowLeft, Leaf, Apple, ShoppingCart, Box, Home as HomeIcon } from 'lucide-react';
+import { ArrowLeft, Leaf, Apple, ShoppingCart, Box, Home as HomeIcon, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 // Categories data (matching with CategorySection)
 const categories = [
+  {
+    id: 'offers',
+    title: 'category_offers',
+    icon: Tag,
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-50',
+    image: 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    featured: true
+  },
   {
     id: 'vegetables',
     title: 'category_vegetables',
@@ -55,18 +63,40 @@ const CategoryPage = () => {
   
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header />
+      <div className="pt-4 px-4 flex items-center">
+        <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
+        <h1 className="text-xl font-medium">{t('category_all')}</h1>
+      </div>
       
-      <main className="flex-1 pt-[25vh] pb-16 content-container">
-        <div className="flex items-center mb-4">
-          <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
-            <ArrowLeft className="h-5 w-5" />
+      <main className="flex-1 py-4 content-container">
+        {/* Featured offers category at the top */}
+        {categories.filter(cat => cat.featured).map((category) => (
+          <Link
+            key={category.id}
+            to={`/category/${category.id}`}
+            className={`flex items-center justify-between p-4 mb-6 rounded-lg shadow-md animate-fade-in ${category.bgColor}`}
+          >
+            <div className="flex items-center">
+              <div className="w-16 h-16 rounded-lg overflow-hidden mr-4">
+                <img 
+                  src={category.image} 
+                  alt={t(category.title)} 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h3 className="font-medium">{t(category.title)}</h3>
+                <p className="text-sm text-muted-foreground">{t('offer_discount', { discount: 50 })}</p>
+              </div>
+            </div>
+            <Tag className={`h-6 w-6 ${category.color}`} />
           </Link>
-          <h1 className="text-xl font-medium">{t('category_all')}</h1>
-        </div>
+        ))}
         
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {categories.map((category, index) => (
+          {categories.filter(cat => !cat.featured).map((category, index) => (
             <Link
               key={category.id}
               to={`/category/${category.id}`}

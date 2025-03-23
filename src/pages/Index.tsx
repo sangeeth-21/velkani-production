@@ -10,7 +10,7 @@ const Index = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       
-      <main className="flex-1 pt-[25vh] pb-16 overflow-auto">
+      <main className="flex-1 pt-[20vh] pb-16 overflow-auto">
         <OfferCarousel />
         <CategorySection />
       </main>

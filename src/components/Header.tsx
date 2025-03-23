@@ -14,7 +14,7 @@ const Header = () => {
   const { t, language, setLanguage } = useLanguage();
   
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass shadow-sm animate-fade-in h-[25vh] flex flex-col">
+    <header className="fixed top-0 left-0 right-0 z-50 glass shadow-sm animate-fade-in h-[20vh] flex flex-col">
       <div className="flex justify-end px-4 py-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
