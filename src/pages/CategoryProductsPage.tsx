@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
@@ -365,6 +364,7 @@ const CategoryProductsPage = () => {
         <ProductListView 
           products={filteredProducts}
           viewType={viewType}
+          categoryId={categoryId}
         />
       </main>
       
