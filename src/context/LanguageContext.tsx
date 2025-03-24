@@ -1,5 +1,5 @@
 
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { translations, Language } from '../translations';
 
 type LanguageContextType = {
@@ -10,8 +10,26 @@ type LanguageContextType = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+// Function to detect browser language and map to supported languages
+const detectBrowserLanguage = (): Language => {
+  const browserLang = navigator.language.toLowerCase();
+  
+  if (browserLang.startsWith('ta')) return 'tamil';
+  if (browserLang.startsWith('hi')) return 'hindi';
+  
+  // Default to tamil as requested
+  return 'tamil';
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>('english');
+  // Initialize with detected language
+  const [language, setLanguage] = useState<Language>('tamil');
+  
+  // Set language based on browser settings on initial render
+  useEffect(() => {
+    const detectedLanguage = detectBrowserLanguage();
+    setLanguage(detectedLanguage);
+  }, []);
 
   const t = (key: string): string => {
     return translations[language][key] || key;

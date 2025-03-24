@@ -49,8 +49,8 @@ const SubcategoryPage = () => {
       </div>
       
       <ScrollArea className="flex-1 py-4 px-4">
-        {/* Mobile-first approach: single column on mobile, more columns on larger screens */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-4 pb-20 animate-slide-in">
+        {/* Modified to show 2 columns in mobile, more columns on larger screens */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-4 pb-20 animate-slide-in">
           {category.subcategories.map((subcategory) => (
             <Link
               key={subcategory.id}
