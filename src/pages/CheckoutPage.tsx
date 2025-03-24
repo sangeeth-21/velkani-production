@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
@@ -18,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Separator } from '../components/ui/separator';
 import { Card, CardContent } from '../components/ui/card';
 import { ScrollArea } from '../components/ui/scroll-area';
+import { Label } from '../components/ui/label';
 
 type DeliveryMethod = 'pickup' | 'delivery';
 
@@ -223,10 +223,10 @@ const CheckoutPage = () => {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="pickup" id="pickup" />
-                  <FormLabel htmlFor="pickup" className="flex items-center cursor-pointer">
+                  <Label htmlFor="pickup" className="flex items-center cursor-pointer">
                     <ShoppingBag className="h-4 w-4 mr-2" />
                     {t('shop_pickup')}
-                  </FormLabel>
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem 
@@ -234,7 +234,7 @@ const CheckoutPage = () => {
                     id="delivery" 
                     disabled={!canDeliver} 
                   />
-                  <FormLabel 
+                  <Label 
                     htmlFor="delivery" 
                     className={`flex items-center cursor-pointer ${!canDeliver ? 'text-muted-foreground' : ''}`}
                   >
@@ -245,7 +245,7 @@ const CheckoutPage = () => {
                         {t('available_above_2000')}
                       </span>
                     )}
-                  </FormLabel>
+                  </Label>
                 </div>
               </RadioGroup>
             </CardContent>
@@ -263,10 +263,9 @@ const CheckoutPage = () => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="name">{t('name')}</FormLabel>
+                        <FormLabel>{t('name')}</FormLabel>
                         <FormControl>
                           <Input
-                            id="name"
                             placeholder={t('enter_name')}
                             {...field}
                           />
@@ -281,10 +280,9 @@ const CheckoutPage = () => {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="phone">{t('phone')}</FormLabel>
+                        <FormLabel>{t('phone')}</FormLabel>
                         <FormControl>
                           <Input
-                            id="phone"
                             placeholder={t('enter_phone')}
                             type="tel"
                             {...field}
@@ -302,10 +300,9 @@ const CheckoutPage = () => {
                         name="address"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel htmlFor="address">{t('address')}</FormLabel>
+                            <FormLabel>{t('address')}</FormLabel>
                             <FormControl>
                               <Input
-                                id="address"
                                 placeholder={t('enter_address')}
                                 {...field}
                               />
@@ -320,10 +317,9 @@ const CheckoutPage = () => {
                         name="pincode"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel htmlFor="pincode">{t('pincode')}</FormLabel>
+                            <FormLabel>{t('pincode')}</FormLabel>
                             <FormControl>
                               <Input
-                                id="pincode"
                                 placeholder={t('enter_pincode')}
                                 {...field}
                               />
@@ -341,10 +337,9 @@ const CheckoutPage = () => {
                       name="deliveryTime"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel htmlFor="deliveryTime">{t('pickup_time')}</FormLabel>
+                          <FormLabel>{t('pickup_time')}</FormLabel>
                           <FormControl>
                             <Input
-                              id="deliveryTime"
                               type="datetime-local"
                               {...field}
                             />
@@ -369,16 +364,16 @@ const CheckoutPage = () => {
                           >
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="cod" id="cod" />
-                              <FormLabel htmlFor="cod" className="cursor-pointer">
+                              <Label htmlFor="cod" className="cursor-pointer">
                                 {t('cash_on_delivery')}
-                              </FormLabel>
+                              </Label>
                             </div>
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="online" id="online" />
-                              <FormLabel htmlFor="online" className="flex items-center cursor-pointer">
+                              <Label htmlFor="online" className="flex items-center cursor-pointer">
                                 <CreditCard className="h-4 w-4 mr-2" />
                                 {t('online_payment')}
-                              </FormLabel>
+                              </Label>
                             </div>
                           </RadioGroup>
                           <FormMessage />
