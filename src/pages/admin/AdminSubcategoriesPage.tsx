@@ -7,7 +7,7 @@ import AdminBottomNavigation from '@/components/admin/AdminBottomNavigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useAdminAuth } from '@/context/AdminAuthContext';
@@ -18,6 +18,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+// Define types for the category and subcategory
+type Subcategory = {
+  id: string;
+  title: string;
+  description?: string;
+  image?: string;
+};
+
+type Category = {
+  id: string;
+  title: string;
+  image: string;
+  icon?: any;
+  color?: string;
+  bgColor?: string;
+  featured?: boolean;
+  subcategories: Subcategory[];
+};
 
 const subcategorySchema = z.object({
   title: z.string().min(2, { message: 'Subcategory name must be at least 2 characters' }),
@@ -35,8 +54,10 @@ const AdminSubcategoriesPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id || '');
-  const [subcategories, setSubcategories] = useState(categories[0]?.subcategories || []);
-  const [editingSubcategory, setEditingSubcategory] = useState<{id: string, title: string, description?: string} | null>(null);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>(
+    (categories[0]?.subcategories || []) as Subcategory[]
+  );
+  const [editingSubcategory, setEditingSubcategory] = useState<Subcategory | null>(null);
 
   const form = useForm<SubcategoryFormValues>({
     resolver: zodResolver(subcategorySchema),
@@ -56,7 +77,7 @@ const AdminSubcategoriesPage = () => {
   useEffect(() => {
     const category = categories.find(cat => cat.id === selectedCategory);
     if (category) {
-      setSubcategories(category.subcategories);
+      setSubcategories(category.subcategories as Subcategory[]);
     }
   }, [selectedCategory]);
 
@@ -85,12 +106,8 @@ const AdminSubcategoriesPage = () => {
     setDialogOpen(true);
   };
 
-  const handleEditSubcategory = (subcategory: {id: string, title: string, description?: string}) => {
-    setEditingSubcategory({
-      id: subcategory.id,
-      title: subcategory.title,
-      description: subcategory.description
-    });
+  const handleEditSubcategory = (subcategory: Subcategory) => {
+    setEditingSubcategory(subcategory);
     setDialogOpen(true);
   };
 
@@ -120,7 +137,7 @@ const AdminSubcategoriesPage = () => {
       });
     } else {
       // Add new subcategory
-      const newSubcategory = {
+      const newSubcategory: Subcategory = {
         id: `sub_${Date.now()}`,
         title: values.title,
         description: values.description,
@@ -225,6 +242,9 @@ const AdminSubcategoriesPage = () => {
             <DialogTitle>
               {editingSubcategory ? t('edit_subcategory') : t('add_subcategory')}
             </DialogTitle>
+            <DialogDescription>
+              {t('subcategory_dialog_description')}
+            </DialogDescription>
           </DialogHeader>
           
           <Form {...form}>

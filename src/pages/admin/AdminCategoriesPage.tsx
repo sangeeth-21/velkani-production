@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Edit, Trash2, Search, ListPlus } from 'lucide-react';
@@ -17,6 +16,24 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+type Subcategory = {
+  id: string;
+  title: string;
+  description?: string;
+  image?: string;
+};
+
+type Category = {
+  id: string;
+  title: string;
+  image: string;
+  icon?: any;
+  color?: string;
+  bgColor?: string;
+  featured?: boolean;
+  subcategories: Subcategory[];
+};
 
 const categorySchema = z.object({
   title: z.string().min(2, { message: 'Category name must be at least 2 characters' }),
@@ -39,7 +56,7 @@ const AdminCategoriesPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [subcategoryDialogOpen, setSubcategoryDialogOpen] = useState(false);
-  const [categoryList, setCategoryList] = useState(categories);
+  const [categoryList, setCategoryList] = useState<Category[]>(categories as Category[]);
   const [editingCategory, setEditingCategory] = useState<{id: string, title: string, image: string} | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
@@ -88,7 +105,7 @@ const AdminCategoriesPage = () => {
     setCategoryDialogOpen(true);
   };
 
-  const handleEditCategory = (category: typeof categories[0]) => {
+  const handleEditCategory = (category: Category) => {
     setEditingCategory({
       id: category.id,
       title: category.title,
@@ -98,7 +115,6 @@ const AdminCategoriesPage = () => {
   };
 
   const handleDeleteCategory = (categoryId: string) => {
-    // In a real app, you would call an API to delete the category
     setCategoryList(prevCategories => prevCategories.filter(cat => cat.id !== categoryId));
     toast({
       title: t('category_deleted'),
@@ -117,7 +133,6 @@ const AdminCategoriesPage = () => {
 
   const onCategorySubmit = (values: CategoryFormValues) => {
     if (editingCategory) {
-      // Update existing category
       setCategoryList(prevCategories => 
         prevCategories.map(cat => 
           cat.id === editingCategory.id 
@@ -131,8 +146,7 @@ const AdminCategoriesPage = () => {
         description: t('category_updated_success')
       });
     } else {
-      // Add new category
-      const newCategory = {
+      const newCategory: Category = {
         id: `cat_${Date.now()}`,
         title: values.title,
         image: values.image,
@@ -153,7 +167,7 @@ const AdminCategoriesPage = () => {
 
   const onSubcategorySubmit = (values: SubcategoryFormValues) => {
     if (selectedCategoryId) {
-      const newSubcategory = {
+      const newSubcategory: Subcategory = {
         id: `sub_${Date.now()}`,
         title: values.title,
         description: values.description
@@ -262,6 +276,9 @@ const AdminCategoriesPage = () => {
             <DialogTitle>
               {editingCategory ? t('edit_category') : t('add_category')}
             </DialogTitle>
+            <DialogDescription>
+              {editingCategory ? t('edit_category_description') : t('add_category_description')}
+            </DialogDescription>
           </DialogHeader>
           
           <Form {...categoryForm}>
