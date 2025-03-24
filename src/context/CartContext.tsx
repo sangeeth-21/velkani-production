@@ -56,7 +56,9 @@ const calculateTotals = (items: CartItem[]): { totalItems: number; totalAmount: 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
     case 'ADD_ITEM': {
-      const existingItemIndex = state.items.findIndex(item => item.id === action.payload.id && item.weight === action.payload.weight);
+      const existingItemIndex = state.items.findIndex(
+        item => item.id === action.payload.id && item.weight === action.payload.weight
+      );
       
       let updatedItems: CartItem[];
       

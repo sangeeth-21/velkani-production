@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import BottomNavigation from '../components/BottomNavigation';
-import OfferCarousel from '../components/OfferCarousel';
+import { OfferCarousel } from '../components/OfferCarousel';
 import CategorySection from '../components/CategorySection';
 import CartButton from '../components/CartButton';
 import SpecialOfferBanner from '../components/SpecialOfferBanner';
