@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Card, CardContent } from './ui/card';
@@ -39,60 +38,10 @@ const specialOffers = [{
   category: 'vegetables',
   subcategory: 'root-vegetables'
 }];
-
 const OfferCarousel = () => {
-  const { t } = useLanguage();
-  
-  return (
-    <div className="py-4 px-4">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-medium">{t('offer_title')}</h2>
-        <Link to="/category/offers" className="text-sm text-muted-foreground flex items-center">
-          {t('see_all')} →
-        </Link>
-      </div>
-      
-      <Carousel className="w-full">
-        <CarouselContent>
-          {specialOffers.map((offer) => (
-            <CarouselItem key={offer.id} className="md:basis-1/2 lg:basis-1/3">
-              <Link to={`/category/${offer.category}/subcategory/${offer.subcategory}`}>
-                <Card className="overflow-hidden shadow-sm">
-                  <CardContent className="p-0">
-                    <div className="relative">
-                      <img 
-                        src={offer.image} 
-                        alt={offer.title}
-                        className="w-full h-40 object-cover" 
-                      />
-                      <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-xs rounded-bl-lg flex items-center">
-                        <Percent className="h-3 w-3 mr-1" /> {offer.discount}% OFF
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-medium text-lg mb-1">{offer.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{offer.description}</p>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="text-muted-foreground line-through text-sm">₹{offer.originalPrice}</span>
-                          <span className="text-lg font-bold ml-2">₹{offer.discountedPrice}</span>
-                        </div>
-                        <Button variant="destructive" size="sm">
-                          {t('see_all')}
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="left-1 top-1/2" />
-        <CarouselNext className="right-1 top-1/2" />
-      </Carousel>
-    </div>
-  );
+  const {
+    t
+  } = useLanguage();
+  return;
 };
-
 export default OfferCarousel;
