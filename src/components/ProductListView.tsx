@@ -107,26 +107,26 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
         </div>
       </div>
       
-      <div className={`${viewType === 'grid' 
-        ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-4' 
-        : 'space-y-4'}`}>
+      {/* For grid view on larger screens, show single column on mobile */}
+      <div className={viewType === 'grid' 
+        ? 'grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-4' 
+        : 'space-y-4'}>
         {enhancedProducts.map((product) => (
           <Card key={product.id} className="overflow-hidden shadow-sm">
             <CardContent className="p-0">
-              <div className={viewType === 'grid' ? 'flex flex-col' : 'flex'}>
-                <div className={viewType === 'grid' 
-                  ? 'h-32 sm:h-36 md:h-40 p-2 flex items-center justify-center' 
-                  : 'w-24 h-24 sm:w-32 sm:h-32 p-2 flex items-center justify-center'}>
+              {/* On mobile, always show items in a row layout for better visibility */}
+              <div className="flex">
+                <div className="w-1/3 h-24 p-2 flex items-center justify-center">
                   <img 
                     src={product.image} 
                     alt={product.name} 
                     className="max-w-full max-h-full object-contain"
                   />
                 </div>
-                <div className="flex-1 p-2 sm:p-3 flex flex-col justify-between">
+                <div className="w-2/3 p-2 flex flex-col justify-between">
                   <div>
                     <div className="text-xs text-muted-foreground mb-1">{product.brand}</div>
-                    <h3 className="font-medium mb-1 text-sm sm:text-base line-clamp-2">{product.name}</h3>
+                    <h3 className="font-medium mb-1 text-sm line-clamp-2">{product.name}</h3>
                     <div className="flex items-center gap-1 mb-1">
                       <div className="text-xs bg-green-100 text-green-700 px-1 rounded flex items-center">
                         <span className="mr-1">{product.ratings}</span>
@@ -136,7 +136,7 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
                     </div>
                     
                     <Select defaultValue={product.weightOptions?.[0].value}>
-                      <SelectTrigger className="flex items-center text-xs sm:text-sm h-6 sm:h-8 w-24 sm:w-32">
+                      <SelectTrigger className="flex items-center text-xs h-6 w-24">
                         <SelectValue placeholder={product.weight} />
                       </SelectTrigger>
                       <SelectContent>
@@ -150,11 +150,11 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
                   </div>
                   
                   <div className="flex items-center justify-between mt-2">
-                    <div className="font-bold text-sm sm:text-base">₹{product.price}</div>
+                    <div className="font-bold text-sm">₹{product.price}</div>
                     <Button 
                       variant="destructive" 
                       size="sm"
-                      className="h-7 text-xs sm:text-sm"
+                      className="h-7 text-xs"
                       onClick={() => handleAddToCart(product)}
                     >
                       {t('add')}

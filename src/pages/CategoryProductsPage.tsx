@@ -33,7 +33,7 @@ import {
 } from '../components/ui/tabs';
 import ProductListView from '../components/ProductListView';
 
-// Products data
+// Products data with all required properties
 const products = [
   {
     id: 'p1',
@@ -50,6 +50,15 @@ const products = [
     inStock: true,
     isBestSeller: true,
     isOrganic: true,
+    brand: 'Organic Farms',
+    ratings: 4.5,
+    totalRatings: 128,
+    weight: '500g',
+    weightOptions: [
+      { value: '500g', price: 35 },
+      { value: '1 kg', price: 65 },
+      { value: '2 kg', price: 120 },
+    ]
   },
   {
     id: 'p2',
@@ -374,3 +383,4 @@ const CategoryProductsPage = () => {
 };
 
 export default CategoryProductsPage;
+
