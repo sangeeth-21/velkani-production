@@ -8,10 +8,12 @@ import { categories } from '../components/CategorySection';
 import BottomNavigation from '../components/BottomNavigation';
 import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
 import CartButton from '../components/CartButton';
+import { useIsMobile } from '../hooks/use-mobile';
 
 const SubcategoryPage = () => {
   const { categoryId } = useParams();
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   
   // Find the current category
   const category = categories.find(c => c.id === categoryId);
@@ -47,22 +49,23 @@ const SubcategoryPage = () => {
       </div>
       
       <ScrollArea className="flex-1 py-4 px-4">
-        <div className="grid grid-cols-2 gap-4 pb-20">
+        {/* Responsive grid layout with different columns based on screen size */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-4 pb-20 animate-slide-in">
           {category.subcategories.map((subcategory) => (
             <Link
               key={subcategory.id}
               to={`/category/${category.id}/subcategory/${subcategory.id}`}
               className="flex flex-col rounded-lg overflow-hidden shadow-sm border bg-card hover:shadow-md transition-shadow animate-scale-in"
             >
-              <div className="h-36 overflow-hidden">
+              <div className="h-28 sm:h-32 md:h-36 overflow-hidden">
                 <img 
                   src={subcategory.image} 
                   alt={subcategory.title} 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="p-3">
-                <h3 className="font-medium">{subcategory.title}</h3>
+              <div className="p-2 md:p-3">
+                <h3 className="font-medium text-sm md:text-base line-clamp-2">{subcategory.title}</h3>
               </div>
             </Link>
           ))}
