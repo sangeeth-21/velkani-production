@@ -14,15 +14,17 @@ const Header = () => {
     <>
       {isHomePage && (
         <header className="fixed top-0 left-0 right-0 z-50 glass shadow-sm animate-fade-in h-[20vh] flex flex-col">
-          <div className="flex-1 flex items-center justify-between px-4">
+          <div className="flex-1 flex items-center justify-end px-4">
             <div className="w-1/3">
               <GlobalLanguageSwitcher />
             </div>
-            <div className="w-1/3 flex items-center justify-center">
+          </div>
+          
+          <div className="flex items-center justify-center px-4">
+            <div className="flex items-center justify-center">
               <Store className="h-6 w-6 mr-2 text-primary" />
               <h1 className="text-2xl font-medium">Middle Shop</h1>
             </div>
-            <div className="w-1/3"></div>
           </div>
           
           <div className="flex items-center justify-center px-4 py-2">

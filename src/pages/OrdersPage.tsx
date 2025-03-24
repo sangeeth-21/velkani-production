@@ -5,6 +5,7 @@ import { Package, ArrowLeft, Clock, CheckCircle, Truck, ShoppingBag } from 'luci
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { Badge } from "@/components/ui/badge";
+import Header from '../components/Header';
 
 // Mock orders data for demonstration
 const orders = [
@@ -75,6 +76,7 @@ const OrdersPage = () => {
   
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <Header />
       <div className="pt-4 px-4 flex items-center">
         <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
           <ArrowLeft className="h-5 w-5" />
@@ -105,14 +107,14 @@ const OrdersPage = () => {
                   {order.items.map((item, index) => (
                     <div key={index} className="flex justify-between text-sm">
                       <span>{item.name} × {item.quantity}</span>
-                      <span>${item.price.toFixed(2)}</span>
+                      <span>₹{item.price.toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
                 
                 <div className="mt-3 pt-3 border-t flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">{t('order_total')}</span>
-                  <span className="font-medium">${order.total.toFixed(2)}</span>
+                  <span className="font-medium">₹{order.total.toFixed(2)}</span>
                 </div>
               </div>
             ))}
