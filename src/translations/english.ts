@@ -29,6 +29,9 @@ export const english = {
   'offer_discount': 'Up to {discount}% off',
   'offer_limited': 'Limited time offer',
   'special_offer': 'Special Offer',
+  'special_offers': 'Special Offers',
+  'shop_now': 'Shop Now',
+  'off': 'OFF',
   
   // Common
   'see_all': 'See All',
@@ -44,6 +47,8 @@ export const english = {
   'language_english': 'English',
   'language_tamil': 'Tamil',
   'language_hindi': 'Hindi',
+  'toggle_language': 'Toggle Language',
+  'cycle_next_language': 'Switch to Next Language',
   
   // Orders
   'orders_title': 'My Orders',

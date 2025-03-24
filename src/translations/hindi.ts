@@ -29,6 +29,9 @@ export const hindi = {
   'offer_discount': '{discount}% तक की छूट',
   'offer_limited': 'सीमित समय का ऑफर',
   'special_offer': 'विशेष ऑफर',
+  'special_offers': 'विशेष ऑफर',
+  'shop_now': 'अभी खरीदें',
+  'off': 'छूट',
   
   // Common
   'see_all': 'सभी देखें',
@@ -44,6 +47,8 @@ export const hindi = {
   'language_english': 'अंग्रेज़ी',
   'language_tamil': 'तमिल',
   'language_hindi': 'हिंदी',
+  'toggle_language': 'भाषा बदलें',
+  'cycle_next_language': 'अगली भाषा पर स्विच करें',
   
   // Orders
   'orders_title': 'मेरे ऑर्डर',

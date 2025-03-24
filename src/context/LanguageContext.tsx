@@ -6,6 +6,7 @@ type LanguageContextType = {
   language: Language;
   setLanguage: (language: Language) => void;
   t: (key: string) => string;
+  toggleLanguage: () => void;
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -31,12 +32,24 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     setLanguage(detectedLanguage);
   }, []);
 
+  // Toggle between languages in a cycle: tamil -> hindi -> english -> tamil
+  const toggleLanguage = () => {
+    if (language === 'tamil') {
+      setLanguage('hindi');
+    } else if (language === 'hindi') {
+      setLanguage('english');
+    } else {
+      setLanguage('tamil');
+    }
+  };
+
   const t = (key: string): string => {
+    // Handle case where key doesn't exist in current language
     return translations[language][key] || key;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, toggleLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

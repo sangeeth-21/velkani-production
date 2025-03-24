@@ -3,8 +3,7 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
-import { Link } from 'react-router-dom';
-import { Tag, Percent } from 'lucide-react';
+import { Percent } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 
 // Special offers data

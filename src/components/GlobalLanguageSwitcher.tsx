@@ -11,7 +11,7 @@ import {
 import { Button } from "./ui/button";
 
 const GlobalLanguageSwitcher = () => {
-  const { t, language, setLanguage } = useLanguage();
+  const { t, language, setLanguage, toggleLanguage } = useLanguage();
   
   return (
     <DropdownMenu>
@@ -30,6 +30,9 @@ const GlobalLanguageSwitcher = () => {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage('hindi')}>
           {t('language_hindi')}
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={toggleLanguage}>
+          {t('cycle_next_language')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

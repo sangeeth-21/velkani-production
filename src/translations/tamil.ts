@@ -29,6 +29,9 @@ export const tamil = {
   'offer_discount': '{discount}% வரை தள்ளுபடி',
   'offer_limited': 'குறுகிய கால சலுகை',
   'special_offer': 'சிறப்பு சலுகை',
+  'special_offers': 'சிறப்பு சலுகைகள்',
+  'shop_now': 'இப்போது ஷாப்பிங் செய்யுங்கள்',
+  'off': 'தள்ளுபடி',
   
   // Common
   'see_all': 'அனைத்தையும் பார்க்க',
@@ -44,6 +47,8 @@ export const tamil = {
   'language_english': 'ஆங்கிலம்',
   'language_tamil': 'தமிழ்',
   'language_hindi': 'இந்தி',
+  'toggle_language': 'மொழியை மாற்று',
+  'cycle_next_language': 'அடுத்த மொழிக்கு மாற்று',
   
   // Orders
   'orders_title': 'எனது ஆர்டர்கள்',
