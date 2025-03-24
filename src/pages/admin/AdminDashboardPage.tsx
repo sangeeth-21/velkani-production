@@ -25,28 +25,28 @@ const AdminDashboardPage = () => {
 
   const dashboardItems = [
     {
-      title: t('products'),
+      title: t('admin_products'),
       count: 180,
       icon: Package,
       route: '/admin/products',
       color: 'bg-blue-100 text-blue-700'
     },
     {
-      title: t('orders'),
+      title: t('admin_orders'),
       count: 24,
       icon: ShoppingBag,
       route: '/admin/orders',
       color: 'bg-green-100 text-green-700'
     },
     {
-      title: t('categories'),
+      title: t('admin_categories'),
       count: 8,
       icon: LayoutGrid,
       route: '/admin/categories',
       color: 'bg-purple-100 text-purple-700'
     },
     {
-      title: t('users'),
+      title: t('admin_users'),
       count: 543,
       icon: Users,
       route: '/admin/users',
@@ -92,24 +92,24 @@ const AdminDashboardPage = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center pb-2 border-b">
                   <div>
-                    <p className="font-medium">New order #ORD-004</p>
-                    <p className="text-sm text-muted-foreground">₹1,200.00 - 3 items</p>
+                    <p className="font-medium">{t('new_order', 'New order')} #ORD-004</p>
+                    <p className="text-sm text-muted-foreground">₹1,200.00 - 3 {t('items')}</p>
                   </div>
-                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">New</span>
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">{t('new', 'New')}</span>
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b">
                   <div>
-                    <p className="font-medium">Updated inventory</p>
-                    <p className="text-sm text-muted-foreground">Fresh Tomatoes restock</p>
+                    <p className="font-medium">{t('updated_inventory', 'Updated inventory')}</p>
+                    <p className="text-sm text-muted-foreground">{t('fresh_tomatoes_restock', 'Fresh Tomatoes restock')}</p>
                   </div>
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Updated</span>
+                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">{t('updated', 'Updated')}</span>
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b">
                   <div>
-                    <p className="font-medium">Order #ORD-002 shipped</p>
-                    <p className="text-sm text-muted-foreground">Shipped via Express</p>
+                    <p className="font-medium">{t('order_shipped', 'Order')} #ORD-002 {t('shipped', 'shipped')}</p>
+                    <p className="text-sm text-muted-foreground">{t('shipped_via', 'Shipped via')} Express</p>
                   </div>
-                  <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Shipped</span>
+                  <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">{t('shipped', 'Shipped')}</span>
                 </div>
               </div>
             </CardContent>

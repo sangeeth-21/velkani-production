@@ -28,13 +28,13 @@ const AdminHeader = ({ title, showBackButton = false, backTo = '/admin/dashboard
         <GlobalLanguageSwitcher />
       </div>
       
-      <h1 className="text-xl font-medium">{title}</h1>
+      <h1 className="text-xl font-medium">{t(title)}</h1>
       
       <Button 
         variant="ghost" 
         size="icon" 
         onClick={adminLogout}
-        title={t('logout')}
+        title={t('admin_logout')}
       >
         <LogOut className="h-5 w-5" />
       </Button>

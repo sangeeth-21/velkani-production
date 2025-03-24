@@ -49,7 +49,7 @@ const AdminSettingsPage = () => {
       items: [
         {
           icon: User,
-          label: t('profile_information'),
+          label: t('profile_info'),
           onClick: () => {
             toast({
               title: t('profile_info'),
@@ -64,7 +64,7 @@ const AdminSettingsPage = () => {
         },
         {
           icon: LogOut,
-          label: t('logout'),
+          label: t('admin_logout'),
           onClick: handleLogout,
           danger: true
         }
@@ -80,7 +80,7 @@ const AdminSettingsPage = () => {
         },
         {
           icon: Bell,
-          label: t('notifications'),
+          label: t('notifications', 'Notifications'),
           component: (
             <Switch
               checked={notificationsEnabled}
@@ -115,7 +115,7 @@ const AdminSettingsPage = () => {
         },
         {
           icon: Info,
-          label: t('about'),
+          label: t('about', 'About'),
           onClick: () => {
             toast({
               title: t('app_info'),
@@ -162,7 +162,7 @@ const AdminSettingsPage = () => {
 
           <div className="text-center text-xs text-muted-foreground mt-6">
             <p>Mall Mate Admin v1.0</p>
-            <p>&copy; 2023 Mall Mate. All rights reserved.</p>
+            <p>&copy; 2023 Mall Mate. {t('all_rights_reserved', 'All rights reserved.')}</p>
           </div>
         </div>
       </main>

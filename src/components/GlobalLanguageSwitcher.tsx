@@ -22,14 +22,17 @@ const GlobalLanguageSwitcher = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        <DropdownMenuItem onClick={() => setLanguage('english')}>
+        <DropdownMenuItem onClick={() => setLanguage('english')} className="flex items-center justify-between">
           {t('language_english')}
+          {language === 'english' && <span className="h-2 w-2 rounded-full bg-primary ml-2"></span>}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLanguage('tamil')}>
+        <DropdownMenuItem onClick={() => setLanguage('tamil')} className="flex items-center justify-between">
           {t('language_tamil')}
+          {language === 'tamil' && <span className="h-2 w-2 rounded-full bg-primary ml-2"></span>}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLanguage('hindi')}>
+        <DropdownMenuItem onClick={() => setLanguage('hindi')} className="flex items-center justify-between">
           {t('language_hindi')}
+          {language === 'hindi' && <span className="h-2 w-2 rounded-full bg-primary ml-2"></span>}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={toggleLanguage}>
           {t('cycle_next_language')}
