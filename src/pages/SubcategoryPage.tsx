@@ -43,7 +43,7 @@ const SubcategoryPage = () => {
           <GlobalLanguageSwitcher />
         </div>
         <div className="flex items-center">
-          <h1 className="text-xl font-medium mr-4">{t(category.title, category.title)}</h1>
+          <h1 className="text-xl font-medium mr-4">{t(`category_${category.id}`, category.title)}</h1>
           <CartButton />
         </div>
       </div>

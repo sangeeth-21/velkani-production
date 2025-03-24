@@ -34,6 +34,12 @@ const Header = () => {
           </div>
         </header>
       )}
+      
+      {!isHomePage && (
+        <div className="absolute top-4 right-4 z-50">
+          <GlobalLanguageSwitcher />
+        </div>
+      )}
     </>
   );
 };

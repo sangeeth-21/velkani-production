@@ -23,17 +23,21 @@ const detectBrowserLanguage = (): Language => {
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  // Initialize with detected language
-  const [language, setLanguage] = useState<Language>('tamil');
+  // Get stored language preference or detect browser language
+  const getInitialLanguage = (): Language => {
+    const storedLanguage = localStorage.getItem('preferredLanguage') as Language | null;
+    if (storedLanguage && ['tamil', 'hindi', 'english'].includes(storedLanguage)) {
+      return storedLanguage;
+    }
+    return detectBrowserLanguage();
+  };
   
-  // Set language based on browser settings on initial render
+  const [language, setLanguage] = useState<Language>(getInitialLanguage());
+  
+  // Set language preference when changed
   useEffect(() => {
-    const detectedLanguage = detectBrowserLanguage();
-    setLanguage(detectedLanguage);
-    
-    // Store in localStorage for persistence
-    localStorage.setItem('preferredLanguage', detectedLanguage);
-  }, []);
+    localStorage.setItem('preferredLanguage', language);
+  }, [language]);
 
   // Toggle between languages in a cycle: tamil -> hindi -> english -> tamil
   const toggleLanguage = () => {
@@ -50,14 +54,26 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('preferredLanguage', newLanguage);
   };
 
-  // Enhanced translation function with fallback support for new content
+  // Enhanced translation function with better fallback support and dynamic key handling
   const t = (key: string, fallback?: string): string => {
-    // Check if the key exists in the current language
+    // First try exact match in current language
     if (translations[language][key]) {
       return translations[language][key];
     }
     
-    // If key doesn't exist but a fallback is provided, use the fallback
+    // For dynamic keys like subcategory_xyz or product_xyz, try to construct a generic version
+    // This helps with keys that might not be predefined in translation files
+    const keyParts = key.split('_');
+    if (keyParts.length > 1) {
+      const genericKey = keyParts[0]; // e.g. 'subcategory' or 'product'
+      
+      // If we have a generic translation for this type, use it
+      if (translations[language][genericKey]) {
+        return fallback || key.split('_').slice(1).join(' ');
+      }
+    }
+    
+    // If fallback is provided, use it
     if (fallback) {
       return fallback;
     }
@@ -67,8 +83,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
       return translations.english[key];
     }
     
-    // Return the key itself as last resort
-    return key;
+    // Return the key itself or the part after the underscore for dynamic keys
+    return keyParts.length > 1 ? keyParts.slice(1).join(' ') : key;
   };
 
   return (

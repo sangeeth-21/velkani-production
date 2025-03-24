@@ -131,6 +131,11 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
                     <h3 className="font-medium mb-1 text-sm line-clamp-2">
                       {t(`product_${product.id}_name`, product.name)}
                     </h3>
+                    {product.description && (
+                      <p className="text-xs text-muted-foreground line-clamp-1 mb-1">
+                        {t(`product_${product.id}_description`, product.description)}
+                      </p>
+                    )}
                     <div className="flex items-center gap-1 mb-1">
                       <div className="text-xs bg-green-100 text-green-700 px-1 rounded flex items-center">
                         <span className="mr-1">{product.ratings}</span>

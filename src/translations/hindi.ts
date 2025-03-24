@@ -3,6 +3,7 @@ export const hindi = {
   // Header
   'contact_whatsapp': 'व्हाट्सएप:',
   'contact_phone': 'कॉल:',
+  'shop_title': 'मिडिल शॉप',
   
   // Navigation
   'nav_home': 'होम',
@@ -23,6 +24,68 @@ export const hindi = {
   'category_plastic': 'प्लास्टिक उत्पाद',
   'category_living': 'जीवन आवश्यकताएं',
   'category_offers': 'विशेष ऑफर',
+  'category_not_found': 'श्रेणी नहीं मिली',
+  'category_not_exist': 'आपके द्वारा खोजी जा रही श्रेणी मौजूद नहीं है',
+  'category_subcategory_not_found': 'श्रेणी या उपश्रेणी नहीं मिली',
+  'category_subcategory_not_exist': 'आपके द्वारा खोजी जा रही श्रेणी या उपश्रेणी मौजूद नहीं है',
+  
+  // Subcategories
+  'subcategory': 'उपश्रेणी',
+  'subcategory_leafy-vegetables': 'पत्तेदार सब्जियां',
+  'subcategory_root-vegetables': 'जड़ वाली सब्जियां',
+  'subcategory_gourds': 'लौकी और कद्दू',
+  'subcategory_seasonal-fruits': 'मौसमी फल',
+  'subcategory_exotic-fruits': 'एक्जोटिक फल',
+  'subcategory_monthly-offers': 'मासिक ऑफर',
+  'subcategory_seasonal-offers': 'मौसमी ऑफर',
+  'subcategory_beverages': 'पेय पदार्थ',
+  'subcategory_dry-goods': 'सूखे खाद्य पदार्थ',
+  'subcategory_storage': 'भंडारण कंटेनर',
+  'subcategory_kitchenware': 'रसोई के बर्तन',
+  'subcategory_home-textiles': 'घरेलू कपड़े',
+  'subcategory_cleaning': 'सफाई सामग्री',
+  
+  // Products
+  'product': 'उत्पाद',
+  'product_p1_name': 'ताजे जैविक टमाटर',
+  'product_p1_description': 'स्थानीय रूप से उगाए गए जैविक टमाटर, सलाद और खाना पकाने के लिए बिल्कुल सही हैं',
+  'product_p2_name': 'लाल शिमला मिर्च',
+  'product_p2_description': 'मीठी और कुरकुरी लाल शिमला मिर्च, विटामिन से भरपूर',
+  'product_p3_name': 'बेबी पालक',
+  'product_p3_description': 'कोमल बेबी पालक के पत्ते, सलाद और स्मूदी के लिए परफेक्ट',
+  'product_p4_name': 'ताजा गाजर',
+  'product_p4_description': 'मीठी और कुरकुरी गाजर, स्नैक्स और खाना पकाने के लिए बढ़िया',
+  'product_p5_name': 'शकरकंद',
+  'product_p5_description': 'पौष्टिक शकरकंद, भुनाई और बेकिंग के लिए बढ़िया',
+  'product_p6_name': 'ताजा अदरक',
+  'product_p6_description': 'तीखी और सुगंधित अदरक जड़ जो खाना पकाने और चाय के लिए उपयोगी है',
+  'product_p7_name': 'जैविक करेला',
+  'product_p7_description': 'पौष्टिक करेला, स्टिर-फ्राई और करी के लिए बढ़िया',
+  'product_p8_name': 'लौकी',
+  'product_p8_description': 'ताजी लौकी, सूप और करी के लिए एकदम सही',
+
+  // Brands
+  'brand': 'ब्रांड',
+  'brand_organic_farms': 'जैविक खेती',
+  'fresh_produce': 'ताजे उत्पाद',
+  
+  // Product filters
+  'all': 'सभी',
+  'popular': 'लोकप्रिय',
+  'organic': 'जैविक',
+  'local': 'स्थानीय',
+  'imported': 'आयातित',
+  'free_delivery': 'मुफ्त डिलीवरी',
+  'popularity': 'लोकप्रियता',
+  'price_low_high': 'मूल्य: कम से अधिक',
+  'price_high_low': 'मूल्य: अधिक से कम',
+  'discount': 'छूट',
+  'newest_first': 'सबसे नया पहले',
+  'under_price': '₹50 से कम',
+  'above_price': '₹200 से अधिक',
+  'and_up': 'और ऊपर',
+  'price': 'मूल्य',
+  'rating': 'रेटिंग',
   
   // Offers
   'offer_title': 'विशेष ऑफर',

@@ -30,6 +30,7 @@ export const english = {
   'category_subcategory_not_exist': 'The category or subcategory you\'re looking for doesn\'t exist.',
   
   // Subcategories
+  'subcategory': 'Subcategory',
   'subcategory_leafy-vegetables': 'Leafy Vegetables',
   'subcategory_root-vegetables': 'Root Vegetables',
   'subcategory_gourds': 'Gourds & Squashes',
@@ -43,6 +44,30 @@ export const english = {
   'subcategory_kitchenware': 'Kitchen Ware',
   'subcategory_home-textiles': 'Home Textiles',
   'subcategory_cleaning': 'Cleaning Supplies',
+  
+  // Products
+  'product': 'Product',
+  'product_p1_name': 'Fresh Organic Tomatoes',
+  'product_p1_description': 'Locally grown organic tomatoes, perfect for salads and cooking.',
+  'product_p2_name': 'Red Bell Peppers',
+  'product_p2_description': 'Sweet and crunchy red bell peppers, rich in vitamins.',
+  'product_p3_name': 'Baby Spinach',
+  'product_p3_description': 'Tender baby spinach leaves, perfect for salads and smoothies.',
+  'product_p4_name': 'Fresh Carrots',
+  'product_p4_description': 'Sweet and crunchy carrots, great for snacking and cooking.',
+  'product_p5_name': 'Sweet Potatoes',
+  'product_p5_description': 'Nutritious sweet potatoes, great for roasting and baking.',
+  'product_p6_name': 'Fresh Ginger Root',
+  'product_p6_description': 'Spicy and aromatic ginger root for cooking and tea.',
+  'product_p7_name': 'Organic Bitter Gourd',
+  'product_p7_description': 'Nutritious bitter gourd, great for stir-fries and curries.',
+  'product_p8_name': 'Bottle Gourd',
+  'product_p8_description': 'Fresh bottle gourd, perfect for soups and curries.',
+  
+  // Brands
+  'brand': 'Brand',
+  'brand_organic_farms': 'Organic Farms',
+  'fresh_produce': 'Fresh Produce',
   
   // Product filters
   'all': 'All',
@@ -61,7 +86,6 @@ export const english = {
   'and_up': '& Up',
   'price': 'Price',
   'rating': 'Rating',
-  'fresh_produce': 'Fresh Produce',
   
   // Offers
   'offer_title': 'Special Offers',
