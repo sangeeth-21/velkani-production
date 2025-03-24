@@ -1,0 +1,58 @@
+
+/* Google Translate Widget Styling */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+} 
+
+body {
+  top: 0 !important;
+}
+
+.goog-te-gadget {
+  font-family: inherit !important;
+  font-size: 0.75rem !important;
+}
+
+.goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 4px 8px !important;
+  border-radius: 0.375rem !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.goog-te-gadget-icon {
+  display: none !important;
+}
+
+.goog-te-menu-value {
+  color: #1f2937 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.goog-te-menu-value span:first-child {
+  margin-right: 4px !important;
+}
+
+.goog-te-menu-value span:last-child {
+  display: none !important;
+}
+
+/* Fix layout issues after translation */
+.skiptranslate iframe {
+  visibility: hidden !important;
+  display: none !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .goog-te-gadget {
+    font-size: 0.7rem !important;
+  }
+  
+  .goog-te-gadget-simple {
+    padding: 2px 4px !important;
+  }
+}
