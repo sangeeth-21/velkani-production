@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Filter, LayoutGrid, List, SlidersHorizontal, Star, Truck } from 'lucide-react';
+import { ArrowLeft, Filter, LayoutGrid, List, Search, SlidersHorizontal, Star, Truck } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ScrollArea } from '../components/ui/scroll-area';
@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Separator } from '../components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import ProductListView from '../components/ProductListView';
+import { Input } from '../components/ui/input';
 
 // Products data with all required properties
 const products = [{
@@ -150,6 +151,7 @@ const products = [{
   isBestSeller: false,
   isOrganic: false
 }];
+
 const CategoryProductsPage = () => {
   const {
     categoryId,
@@ -159,13 +161,25 @@ const CategoryProductsPage = () => {
     t
   } = useLanguage();
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
 
   // Find the current category and subcategory
   const category = categories.find(c => c.id === categoryId);
   const subcategory = category?.subcategories.find(s => s.id === subcategoryId);
 
   // Get the filtered products for the current subcategory
-  const filteredProducts = products.filter(product => product.categoryId === categoryId && product.subcategoryId === subcategoryId);
+  let filteredProducts = products.filter(product => product.categoryId === categoryId && product.subcategoryId === subcategoryId);
+  
+  // Apply search filter if search term exists
+  if (searchTerm.trim()) {
+    filteredProducts = filteredProducts.filter(product => 
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (product.brand && product.brand.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  }
+  
   if (!category || !subcategory) {
     return <div className="p-4">
         <Link to="/category" className="flex items-center gap-2 text-primary">
@@ -178,6 +192,7 @@ const CategoryProductsPage = () => {
         </div>
       </div>;
   }
+  
   return <div className="min-h-screen bg-background flex flex-col">
       <div className="pt-4 px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -188,17 +203,33 @@ const CategoryProductsPage = () => {
         </div>
         <div className="flex items-center">
           <h1 className="text-xl font-medium mr-4">{t(`subcategory_${subcategory.id}`, subcategory.title)}</h1>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="mr-2" 
+            onClick={() => setShowSearch(!showSearch)}
+          >
+            <Search className="h-5 w-5" />
+          </Button>
           <CartButton />
         </div>
       </div>
       
+      {showSearch && (
+        <div className="px-4 py-2 animate-slide-down">
+          <Input
+            type="text"
+            placeholder={t('search_products', 'Search products...')}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full"
+          />
+        </div>
+      )}
       
-      
-      
-      
-      <main className="flex-1 px-4 pb-24 animate-fade-in">
+      <ScrollArea className="flex-1 px-4 pb-24 animate-fade-in">
         <ProductListView products={filteredProducts} viewType={viewType} categoryId={categoryId} />
-      </main>
+      </ScrollArea>
       
       <BottomNavigation />
     </div>;
