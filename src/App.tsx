@@ -8,6 +8,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import { CartProvider } from "./context/CartContext";
 import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
+import SubcategoryPage from "./pages/SubcategoryPage";
 import CategoryProductsPage from "./pages/CategoryProductsPage";
 import OrdersPage from "./pages/OrdersPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -28,7 +29,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/category" element={<CategoryPage />} />
-              <Route path="/category/:categoryId" element={<CategoryProductsPage />} />
+              <Route path="/category/:categoryId" element={<SubcategoryPage />} />
+              <Route path="/category/:categoryId/subcategory/:subcategoryId" element={<CategoryProductsPage />} />
               <Route path="/orders" element={<OrdersPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/checkout" element={<CheckoutPage />} />

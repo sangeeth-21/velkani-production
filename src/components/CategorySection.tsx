@@ -4,7 +4,7 @@ import { ChevronRight, Leaf, Apple, ShoppingCart, Box, Home as HomeIcon, Tag } f
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
-// Updated category data
+// Updated category data with subcategories
 const categories = [
   {
     id: 'offers',
@@ -13,7 +13,19 @@ const categories = [
     color: 'text-purple-500',
     bgColor: 'bg-purple-50',
     image: 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    featured: true
+    featured: true,
+    subcategories: [
+      {
+        id: 'monthly-offers',
+        title: 'Monthly Offers',
+        image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'seasonal-offers',
+        title: 'Seasonal Offers',
+        image: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      }
+    ]
   },
   {
     id: 'vegetables',
@@ -21,7 +33,24 @@ const categories = [
     icon: Leaf,
     color: 'text-green-500',
     bgColor: 'bg-green-50',
-    image: 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    image: 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    subcategories: [
+      {
+        id: 'leafy-vegetables',
+        title: 'Leafy Vegetables',
+        image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'root-vegetables',
+        title: 'Root Vegetables',
+        image: 'https://images.unsplash.com/photo-1598170845058-33f9a5052f92?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'gourds',
+        title: 'Gourds & Squashes',
+        image: 'https://images.unsplash.com/photo-1546470427-227df1e3c848?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      }
+    ]
   },
   {
     id: 'fruits',
@@ -29,7 +58,19 @@ const categories = [
     icon: Apple,
     color: 'text-red-500',
     bgColor: 'bg-red-50',
-    image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    subcategories: [
+      {
+        id: 'seasonal-fruits',
+        title: 'Seasonal Fruits',
+        image: 'https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'exotic-fruits',
+        title: 'Exotic Fruits',
+        image: 'https://images.unsplash.com/photo-1603833665858-e61d17a86224?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      }
+    ]
   },
   {
     id: 'grocery',
@@ -37,7 +78,19 @@ const categories = [
     icon: ShoppingCart,
     color: 'text-yellow-500',
     bgColor: 'bg-yellow-50',
-    image: 'https://images.unsplash.com/photo-1588964895597-cfccd35c2b78?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    image: 'https://images.unsplash.com/photo-1588964895597-cfccd35c2b78?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    subcategories: [
+      {
+        id: 'beverages',
+        title: 'Beverages',
+        image: 'https://m.media-amazon.com/images/I/61+xUO7opQL._SX522_.jpg'
+      },
+      {
+        id: 'dry-goods',
+        title: 'Dry Goods',
+        image: 'https://m.media-amazon.com/images/I/61z-vdTl8QL._SX522_.jpg'
+      }
+    ]
   },
   {
     id: 'plastic',
@@ -45,7 +98,19 @@ const categories = [
     icon: Box,
     color: 'text-blue-500',
     bgColor: 'bg-blue-50',
-    image: 'https://images.unsplash.com/photo-1591193686104-fddba4cb7cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    image: 'https://images.unsplash.com/photo-1591193686104-fddba4cb7cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    subcategories: [
+      {
+        id: 'storage',
+        title: 'Storage Containers',
+        image: 'https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'kitchenware',
+        title: 'Kitchen Ware',
+        image: 'https://images.unsplash.com/photo-1583845112227-29639ad3c285?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      }
+    ]
   },
   {
     id: 'living',
@@ -53,9 +118,24 @@ const categories = [
     icon: HomeIcon,
     color: 'text-purple-500',
     bgColor: 'bg-purple-50',
-    image: 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    image: 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    subcategories: [
+      {
+        id: 'home-textiles',
+        title: 'Home Textiles',
+        image: 'https://images.unsplash.com/photo-1583845112227-29639ad3c285?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'cleaning',
+        title: 'Cleaning Supplies',
+        image: 'https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      }
+    ]
   }
 ];
+
+// Export categories for use in other components
+export { categories };
 
 const CategorySection = () => {
   const { t } = useLanguage();

@@ -1,64 +1,12 @@
 
 import React from 'react';
 import BottomNavigation from '../components/BottomNavigation';
-import { ArrowLeft, Leaf, Apple, ShoppingCart, Box, Home as HomeIcon, Tag } from 'lucide-react';
+import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import GlobalLanguageSwitcher from '../components/GlobalLanguageSwitcher';
 import CartButton from '../components/CartButton';
-
-// Categories data (matching with CategorySection)
-const categories = [
-  {
-    id: 'offers',
-    title: 'category_offers',
-    icon: Tag,
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-50',
-    image: 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    featured: true
-  },
-  {
-    id: 'vegetables',
-    title: 'category_vegetables',
-    icon: Leaf,
-    color: 'text-green-500',
-    bgColor: 'bg-green-50',
-    image: 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'fruits',
-    title: 'category_fruits',
-    icon: Apple,
-    color: 'text-red-500',
-    bgColor: 'bg-red-50',
-    image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'grocery',
-    title: 'category_grocery',
-    icon: ShoppingCart,
-    color: 'text-yellow-500',
-    bgColor: 'bg-yellow-50',
-    image: 'https://images.unsplash.com/photo-1588964895597-cfccd35c2b78?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'plastic',
-    title: 'category_plastic',
-    icon: Box,
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-50',
-    image: 'https://images.unsplash.com/photo-1591193686104-fddba4cb7cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'living',
-    title: 'category_living',
-    icon: HomeIcon,
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-50',
-    image: 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-  }
-];
+import { categories } from '../components/CategorySection';
 
 const CategoryPage = () => {
   const { t } = useLanguage();
@@ -99,7 +47,7 @@ const CategoryPage = () => {
                 <p className="text-sm text-muted-foreground">{t('offer_limited')}</p>
               </div>
             </div>
-            <Tag className={`h-6 w-6 ${category.color}`} />
+            <ChevronRight className={`h-5 w-5 ${category.color}`} />
           </Link>
         ))}
         
