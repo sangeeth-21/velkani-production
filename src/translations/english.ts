@@ -3,6 +3,7 @@ export const english = {
   // Header
   'contact_whatsapp': 'WhatsApp:',
   'contact_phone': 'Call:',
+  'shop_title': 'Middle Shop',
   
   // Navigation
   'nav_home': 'Home',
@@ -23,6 +24,44 @@ export const english = {
   'category_plastic': 'Plastic Products',
   'category_living': 'Living Needs',
   'category_offers': 'Special Offers',
+  'category_not_found': 'Category not found',
+  'category_not_exist': 'The category you\'re looking for doesn\'t exist.',
+  'category_subcategory_not_found': 'Category or subcategory not found',
+  'category_subcategory_not_exist': 'The category or subcategory you\'re looking for doesn\'t exist.',
+  
+  // Subcategories
+  'subcategory_leafy-vegetables': 'Leafy Vegetables',
+  'subcategory_root-vegetables': 'Root Vegetables',
+  'subcategory_gourds': 'Gourds & Squashes',
+  'subcategory_seasonal-fruits': 'Seasonal Fruits',
+  'subcategory_exotic-fruits': 'Exotic Fruits',
+  'subcategory_monthly-offers': 'Monthly Offers',
+  'subcategory_seasonal-offers': 'Seasonal Offers',
+  'subcategory_beverages': 'Beverages',
+  'subcategory_dry-goods': 'Dry Goods',
+  'subcategory_storage': 'Storage Containers',
+  'subcategory_kitchenware': 'Kitchen Ware',
+  'subcategory_home-textiles': 'Home Textiles',
+  'subcategory_cleaning': 'Cleaning Supplies',
+  
+  // Product filters
+  'all': 'All',
+  'popular': 'Popular',
+  'organic': 'Organic',
+  'local': 'Local',
+  'imported': 'Imported',
+  'free_delivery': 'Free Delivery',
+  'popularity': 'Popularity',
+  'price_low_high': 'Price: Low to High',
+  'price_high_low': 'Price: High to Low',
+  'discount': 'Discount',
+  'newest_first': 'Newest First',
+  'under_price': 'Under ₹50',
+  'above_price': 'Above ₹200',
+  'and_up': '& Up',
+  'price': 'Price',
+  'rating': 'Rating',
+  'fresh_produce': 'Fresh Produce',
   
   // Offers
   'offer_title': 'Special Offers',

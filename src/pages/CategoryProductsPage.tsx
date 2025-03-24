@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
@@ -196,8 +197,8 @@ const CategoryProductsPage = () => {
           {t('back')}
         </Link>
         <div className="mt-8 text-center">
-          <h2 className="text-xl font-semibold">Category or subcategory not found</h2>
-          <p className="mt-2 text-muted-foreground">The category or subcategory you're looking for doesn't exist.</p>
+          <h2 className="text-xl font-semibold">{t('category_subcategory_not_found', 'Category or subcategory not found')}</h2>
+          <p className="mt-2 text-muted-foreground">{t('category_subcategory_not_exist', 'The category or subcategory you\'re looking for doesn\'t exist.')}</p>
         </div>
       </div>
     );
@@ -213,18 +214,18 @@ const CategoryProductsPage = () => {
           <GlobalLanguageSwitcher />
         </div>
         <div className="flex items-center">
-          <h1 className="text-xl font-medium mr-4">{subcategory.title}</h1>
+          <h1 className="text-xl font-medium mr-4">{t(`subcategory_${subcategory.id}`, subcategory.title)}</h1>
           <CartButton />
         </div>
       </div>
       
       <div className="px-4 mt-4">
         <div className="flex flex-wrap gap-2 mb-4">
-          <Button variant="outline" size="sm" className="rounded-full">All</Button>
-          <Button variant="outline" size="sm" className="rounded-full">Popular</Button>
-          <Button variant="outline" size="sm" className="rounded-full">Organic</Button>
-          <Button variant="outline" size="sm" className="rounded-full">Local</Button>
-          <Button variant="outline" size="sm" className="rounded-full">Imported</Button>
+          <Button variant="outline" size="sm" className="rounded-full">{t('all', 'All')}</Button>
+          <Button variant="outline" size="sm" className="rounded-full">{t('popular', 'Popular')}</Button>
+          <Button variant="outline" size="sm" className="rounded-full">{t('organic', 'Organic')}</Button>
+          <Button variant="outline" size="sm" className="rounded-full">{t('local', 'Local')}</Button>
+          <Button variant="outline" size="sm" className="rounded-full">{t('imported', 'Imported')}</Button>
         </div>
       </div>
       
@@ -236,7 +237,7 @@ const CategoryProductsPage = () => {
           </Badge>
           <Badge variant="outline" className="rounded-full py-2 flex items-center gap-1">
             <Truck className="h-3 w-3" />
-            Free Delivery
+            {t('free_delivery', 'Free Delivery')}
           </Badge>
         </div>
         
@@ -254,32 +255,32 @@ const CategoryProductsPage = () => {
               <ScrollArea className="h-[60vh] mt-4">
                 <Tabs defaultValue="category">
                   <TabsList className="grid grid-cols-3 mb-4">
-                    <TabsTrigger value="category">Category</TabsTrigger>
-                    <TabsTrigger value="price">Price</TabsTrigger>
-                    <TabsTrigger value="rating">Rating</TabsTrigger>
+                    <TabsTrigger value="category">{t('category', 'Category')}</TabsTrigger>
+                    <TabsTrigger value="price">{t('price', 'Price')}</TabsTrigger>
+                    <TabsTrigger value="rating">{t('rating', 'Rating')}</TabsTrigger>
                   </TabsList>
                   <TabsContent value="category">
                     <div className="space-y-4">
                       <div>
-                        <h4 className="font-medium mb-2">Vegetables</h4>
+                        <h4 className="font-medium mb-2">{t('category_vegetables', 'Vegetables')}</h4>
                         <div className="grid grid-cols-2 gap-2">
                           <Link to="/category/vegetables/subcategory/leafy-vegetables" className="px-3 py-2 border rounded-md text-sm">
-                            Leafy Vegetables
+                            {t('subcategory_leafy-vegetables', 'Leafy Vegetables')}
                           </Link>
                           <Link to="/category/vegetables/subcategory/root-vegetables" className="px-3 py-2 border rounded-md text-sm">
-                            Root Vegetables
+                            {t('subcategory_root-vegetables', 'Root Vegetables')}
                           </Link>
                           <Link to="/category/vegetables/subcategory/gourds" className="px-3 py-2 border rounded-md text-sm">
-                            Gourds & Squashes
+                            {t('subcategory_gourds', 'Gourds & Squashes')}
                           </Link>
                         </div>
                       </div>
                       <Separator />
                       <div>
-                        <h4 className="font-medium mb-2">Fruits</h4>
+                        <h4 className="font-medium mb-2">{t('category_fruits', 'Fruits')}</h4>
                         <div className="grid grid-cols-2 gap-2">
-                          <Button variant="outline" size="sm">Seasonal Fruits</Button>
-                          <Button variant="outline" size="sm">Exotic Fruits</Button>
+                          <Button variant="outline" size="sm">{t('subcategory_seasonal-fruits', 'Seasonal Fruits')}</Button>
+                          <Button variant="outline" size="sm">{t('subcategory_exotic-fruits', 'Exotic Fruits')}</Button>
                         </div>
                       </div>
                     </div>
@@ -287,10 +288,10 @@ const CategoryProductsPage = () => {
                   <TabsContent value="price">
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-2">
-                        <Button variant="outline" size="sm">Under ₹50</Button>
+                        <Button variant="outline" size="sm">{t('under_price', 'Under ₹50')}</Button>
                         <Button variant="outline" size="sm">₹50 - ₹100</Button>
                         <Button variant="outline" size="sm">₹100 - ₹200</Button>
-                        <Button variant="outline" size="sm">Above ₹200</Button>
+                        <Button variant="outline" size="sm">{t('above_price', 'Above ₹200')}</Button>
                       </div>
                     </div>
                   </TabsContent>
@@ -304,7 +305,7 @@ const CategoryProductsPage = () => {
                             ))}
                             <Star className="h-4 w-4" />
                           </div>
-                          <span className="ml-2">& Up</span>
+                          <span className="ml-2">{t('and_up', '& Up')}</span>
                         </Button>
                         <Button variant="outline" size="sm" className="flex items-center justify-start">
                           <div className="flex">
@@ -315,7 +316,7 @@ const CategoryProductsPage = () => {
                               <Star key={i} className="h-4 w-4" />
                             ))}
                           </div>
-                          <span className="ml-2">& Up</span>
+                          <span className="ml-2">{t('and_up', '& Up')}</span>
                         </Button>
                       </div>
                     </div>
@@ -336,11 +337,11 @@ const CategoryProductsPage = () => {
                 <DialogTitle>{t('sort')}</DialogTitle>
               </DialogHeader>
               <div className="mt-4 space-y-2">
-                <Button variant="outline" className="w-full justify-start">Popularity</Button>
-                <Button variant="outline" className="w-full justify-start">Price: Low to High</Button>
-                <Button variant="outline" className="w-full justify-start">Price: High to Low</Button>
-                <Button variant="outline" className="w-full justify-start">Discount</Button>
-                <Button variant="outline" className="w-full justify-start">Newest First</Button>
+                <Button variant="outline" className="w-full justify-start">{t('popularity', 'Popularity')}</Button>
+                <Button variant="outline" className="w-full justify-start">{t('price_low_high', 'Price: Low to High')}</Button>
+                <Button variant="outline" className="w-full justify-start">{t('price_high_low', 'Price: High to Low')}</Button>
+                <Button variant="outline" className="w-full justify-start">{t('discount', 'Discount')}</Button>
+                <Button variant="outline" className="w-full justify-start">{t('newest_first', 'Newest First')}</Button>
               </div>
             </DialogContent>
           </Dialog>
@@ -383,4 +384,3 @@ const CategoryProductsPage = () => {
 };
 
 export default CategoryProductsPage;
-

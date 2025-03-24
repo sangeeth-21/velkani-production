@@ -26,8 +26,8 @@ const SubcategoryPage = () => {
           {t('back')}
         </Link>
         <div className="mt-8 text-center">
-          <h2 className="text-xl font-semibold">Category not found</h2>
-          <p className="mt-2 text-muted-foreground">The category you're looking for doesn't exist.</p>
+          <h2 className="text-xl font-semibold">{t('category_not_found', 'Category not found')}</h2>
+          <p className="mt-2 text-muted-foreground">{t('category_not_exist', 'The category you\'re looking for doesn\'t exist.')}</p>
         </div>
       </div>
     );
@@ -43,7 +43,7 @@ const SubcategoryPage = () => {
           <GlobalLanguageSwitcher />
         </div>
         <div className="flex items-center">
-          <h1 className="text-xl font-medium mr-4">{t(category.title)}</h1>
+          <h1 className="text-xl font-medium mr-4">{t(category.title, category.title)}</h1>
           <CartButton />
         </div>
       </div>
@@ -60,12 +60,14 @@ const SubcategoryPage = () => {
               <div className="h-28 sm:h-32 md:h-36 overflow-hidden">
                 <img 
                   src={subcategory.image} 
-                  alt={subcategory.title} 
+                  alt={t(`subcategory_${subcategory.id}`, subcategory.title)} 
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="p-2 md:p-3">
-                <h3 className="font-medium text-sm md:text-base line-clamp-2">{subcategory.title}</h3>
+                <h3 className="font-medium text-sm md:text-base line-clamp-2">
+                  {t(`subcategory_${subcategory.id}`, subcategory.title)}
+                </h3>
               </div>
             </Link>
           ))}

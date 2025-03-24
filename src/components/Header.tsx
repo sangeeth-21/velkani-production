@@ -3,6 +3,7 @@ import React from 'react';
 import { Phone, MessageCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useLocation } from 'react-router-dom';
+import GlobalLanguageSwitcher from './GlobalLanguageSwitcher';
 
 const Header = () => {
   const { t } = useLanguage();
@@ -13,8 +14,9 @@ const Header = () => {
     <>
       {isHomePage && (
         <header className="fixed top-0 left-0 right-0 z-50 glass shadow-sm animate-fade-in h-[20vh] flex flex-col">
-          <div className="flex-1 flex items-center justify-center">
-            <h1 className="text-2xl font-medium">Middle Shop</h1>
+          <div className="flex-1 flex items-center justify-between px-4">
+            <h1 className="text-2xl font-medium">{t('shop_title', 'Middle Shop')}</h1>
+            <GlobalLanguageSwitcher />
           </div>
           
           <div className="flex items-center justify-center px-4 py-2">

@@ -54,7 +54,7 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
       const basePrice = product.price;
       return {
         ...product,
-        brand: product.brand || 'Fresh Produce',
+        brand: product.brand || t('fresh_produce', 'Fresh Produce'),
         ratings: product.ratings || product.rating || 4.0,
         totalRatings: product.totalRatings || product.numReviews || 0,
         weight: product.weight || product.unit || '500g',
@@ -67,7 +67,7 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
     }
     return {
       ...product,
-      brand: product.brand || 'Fresh Produce',
+      brand: product.brand || t('fresh_produce', 'Fresh Produce'),
       ratings: product.ratings || product.rating || 4.0,
       totalRatings: product.totalRatings || product.numReviews || 0,
       weight: product.weight || product.unit || '500g',
@@ -119,20 +119,26 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
                 <div className="w-1/3 h-24 p-2 flex items-center justify-center">
                   <img 
                     src={product.image} 
-                    alt={product.name} 
+                    alt={t(`product_${product.id}_name`, product.name)} 
                     className="max-w-full max-h-full object-contain"
                   />
                 </div>
                 <div className="w-2/3 p-2 flex flex-col justify-between">
                   <div>
-                    <div className="text-xs text-muted-foreground mb-1">{product.brand}</div>
-                    <h3 className="font-medium mb-1 text-sm line-clamp-2">{product.name}</h3>
+                    <div className="text-xs text-muted-foreground mb-1">
+                      {t(`brand_${product.brand?.toLowerCase().replace(/\s+/g, '_')}`, product.brand || '')}
+                    </div>
+                    <h3 className="font-medium mb-1 text-sm line-clamp-2">
+                      {t(`product_${product.id}_name`, product.name)}
+                    </h3>
                     <div className="flex items-center gap-1 mb-1">
                       <div className="text-xs bg-green-100 text-green-700 px-1 rounded flex items-center">
                         <span className="mr-1">{product.ratings}</span>
                         <Star size={12} fill="currentColor" />
                       </div>
-                      <span className="text-xs text-muted-foreground">{product.totalRatings} {t('ratings')}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {product.totalRatings} {t('ratings')}
+                      </span>
                     </div>
                     
                     <Select defaultValue={product.weightOptions?.[0].value}>

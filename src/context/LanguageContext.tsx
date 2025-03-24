@@ -5,7 +5,7 @@ import { translations, Language } from '../translations';
 type LanguageContextType = {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, fallback?: string) => string;
   toggleLanguage: () => void;
 };
 
@@ -30,22 +30,45 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const detectedLanguage = detectBrowserLanguage();
     setLanguage(detectedLanguage);
+    
+    // Store in localStorage for persistence
+    localStorage.setItem('preferredLanguage', detectedLanguage);
   }, []);
 
   // Toggle between languages in a cycle: tamil -> hindi -> english -> tamil
   const toggleLanguage = () => {
+    let newLanguage: Language;
     if (language === 'tamil') {
-      setLanguage('hindi');
+      newLanguage = 'hindi';
     } else if (language === 'hindi') {
-      setLanguage('english');
+      newLanguage = 'english';
     } else {
-      setLanguage('tamil');
+      newLanguage = 'tamil';
     }
+    
+    setLanguage(newLanguage);
+    localStorage.setItem('preferredLanguage', newLanguage);
   };
 
-  const t = (key: string): string => {
-    // Handle case where key doesn't exist in current language
-    return translations[language][key] || key;
+  // Enhanced translation function with fallback support for new content
+  const t = (key: string, fallback?: string): string => {
+    // Check if the key exists in the current language
+    if (translations[language][key]) {
+      return translations[language][key];
+    }
+    
+    // If key doesn't exist but a fallback is provided, use the fallback
+    if (fallback) {
+      return fallback;
+    }
+    
+    // Try English as a fallback for untranslated keys
+    if (language !== 'english' && translations.english[key]) {
+      return translations.english[key];
+    }
+    
+    // Return the key itself as last resort
+    return key;
   };
 
   return (
