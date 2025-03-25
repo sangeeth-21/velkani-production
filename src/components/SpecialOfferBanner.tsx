@@ -10,7 +10,7 @@ const SpecialOfferBanner = () => {
   
   return (
     <div className="px-4 py-3 mb-4 animate-fade-in">
-      <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white">
+      <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white">
         <div className="absolute -right-10 -top-10 h-40 w-40 bg-white/10 rounded-full blur-xl" />
         <div className="absolute right-10 bottom-0 h-20 w-20 bg-white/10 rounded-full blur-lg" />
         
