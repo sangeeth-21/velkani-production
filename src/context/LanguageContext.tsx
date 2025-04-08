@@ -22,6 +22,71 @@ const detectBrowserLanguage = (): Language => {
   return 'tamil';
 };
 
+// Initialize Google Translate
+const initGoogleTranslate = (lang: string) => {
+  // Skip initialization if element already exists
+  if (document.getElementById('google_translate_element')) {
+    // Just change the language
+    const googleTranslateSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+    if (googleTranslateSelect) {
+      let translateCode = 'en';
+      
+      // Map our language codes to Google Translate codes
+      if (lang === 'tamil') translateCode = 'ta';
+      else if (lang === 'hindi') translateCode = 'hi';
+      else if (lang === 'english') translateCode = 'en';
+      
+      googleTranslateSelect.value = translateCode;
+      googleTranslateSelect.dispatchEvent(new Event('change'));
+    }
+    return;
+  }
+  
+  // Create the script element and add Google Translate script
+  const script = document.createElement('script');
+  script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+  script.async = true;
+  
+  // Create Google Translate initialization function
+  window.googleTranslateElementInit = () => {
+    new (window as any).google.translate.TranslateElement(
+      {
+        pageLanguage: 'en',
+        includedLanguages: 'en,ta,hi',
+        layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false,
+      },
+      'google_translate_element'
+    );
+    
+    // Set the initial language after initialization
+    setTimeout(() => {
+      const googleTranslateSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+      if (googleTranslateSelect) {
+        let translateCode = 'en';
+        
+        // Map our language codes to Google Translate codes
+        if (lang === 'tamil') translateCode = 'ta';
+        else if (lang === 'hindi') translateCode = 'hi';
+        else if (lang === 'english') translateCode = 'en';
+        
+        googleTranslateSelect.value = translateCode;
+        googleTranslateSelect.dispatchEvent(new Event('change'));
+      }
+    }, 1000);
+  };
+  
+  // Add script to document
+  document.head.appendChild(script);
+};
+
+// Add types for the Google Translate global function
+declare global {
+  interface Window {
+    googleTranslateElementInit: () => void;
+  }
+}
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   // Get stored language preference or detect browser language
   const getInitialLanguage = (): Language => {
@@ -34,9 +99,17 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   
   const [language, setLanguage] = useState<Language>(getInitialLanguage());
   
+  // Initialize Google Translate when component mounts
+  useEffect(() => {
+    initGoogleTranslate(language);
+  }, []);
+  
   // Set language preference when changed
   useEffect(() => {
     localStorage.setItem('preferredLanguage', language);
+    
+    // Update Google Translate language
+    initGoogleTranslate(language);
   }, [language]);
 
   // Toggle between languages in a cycle: tamil -> hindi -> english -> tamil
