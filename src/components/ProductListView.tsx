@@ -128,8 +128,86 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
         </div>
       </div>
       
-      {localViewType === 'grid' ? (
-        // Grid view - responsive layout for different screen sizes
+      {isMobile ? (
+        // Mobile view - row layout for each product
+        <div className="space-y-3">
+          {enhancedProducts.map((product) => (
+            <Card key={product.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <CardContent className="p-0">
+                <div className="flex">
+                  <div className="w-1/3 h-auto">
+                    <img 
+                      src={product.image} 
+                      alt={t(`product_${product.id}_name`, product.name)} 
+                      className="w-full h-full object-cover aspect-square"
+                    />
+                  </div>
+                  <div className="w-2/3 p-3">
+                    <div className="flex justify-between">
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">
+                          {t(`brand_${product.brand?.toLowerCase().replace(/\s+/g, '_')}`, product.brand || '')}
+                        </div>
+                        <h3 className="font-medium text-sm mb-1 line-clamp-1">
+                          {t(`product_${product.id}_name`, product.name)}
+                        </h3>
+                      </div>
+                      {product.isOrganic && (
+                        <div className="bg-green-100 text-green-700 text-xs px-2 py-0.5 h-fit rounded-full">
+                          {t('organic')}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center gap-1 mb-1">
+                      <div className="text-xs bg-green-100 text-green-700 px-1 rounded flex items-center">
+                        <span className="mr-1">{product.ratings}</span>
+                        <Star size={12} fill="currentColor" />
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        {product.totalRatings} {t('ratings')}
+                      </span>
+                    </div>
+                    
+                    <Select defaultValue={product.weightOptions?.[0].value}>
+                      <SelectTrigger className="flex items-center text-xs h-6 mb-1">
+                        <SelectValue placeholder={product.weight} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {product.weightOptions?.map((option, idx) => (
+                          <SelectItem key={idx} value={option.value}>
+                            {option.value} - ₹{option.price}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    
+                    <div className="flex items-center justify-between mt-1">
+                      <div>
+                        <span className="font-bold text-sm">₹{product.price}</span>
+                        {product.oldPrice && (
+                          <span className="text-xs line-through text-muted-foreground ml-1">
+                            ₹{product.oldPrice}
+                          </span>
+                        )}
+                      </div>
+                      <Button 
+                        variant="destructive" 
+                        size="sm"
+                        className="h-7"
+                        onClick={() => handleAddToCart(product)}
+                      >
+                        {t('add')}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : localViewType === 'grid' ? (
+        // Desktop grid view
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
           {enhancedProducts.map((product) => (
             <Card key={product.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -200,7 +278,7 @@ const ProductListView = ({ categoryId, products, viewType = 'grid' }: ProductLis
           ))}
         </div>
       ) : (
-        // List view - more horizontal layout with product details
+        // Desktop list view
         <div className="space-y-3">
           {enhancedProducts.map((product) => (
             <Card key={product.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
