@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Separator } from '../components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import ProductListView from '../components/ProductListView';
+import { useIsMobile } from '../hooks/use-mobile';
 
 // Products data with all required properties
 const products = [{
@@ -150,6 +151,7 @@ const products = [{
   isBestSeller: false,
   isOrganic: false
 }];
+
 const CategoryProductsPage = () => {
   const {
     categoryId,
@@ -159,6 +161,7 @@ const CategoryProductsPage = () => {
     t
   } = useLanguage();
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
+  const isMobile = useIsMobile();
 
   // Find the current category and subcategory
   const category = categories.find(c => c.id === categoryId);
@@ -166,6 +169,7 @@ const CategoryProductsPage = () => {
 
   // Get the filtered products for the current subcategory
   const filteredProducts = products.filter(product => product.categoryId === categoryId && product.subcategoryId === subcategoryId);
+  
   if (!category || !subcategory) {
     return <div className="p-4">
         <Link to="/category" className="flex items-center gap-2 text-primary">
@@ -178,6 +182,7 @@ const CategoryProductsPage = () => {
         </div>
       </div>;
   }
+  
   return <div className="min-h-screen bg-background flex flex-col">
       <div className="pt-4 px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -192,15 +197,46 @@ const CategoryProductsPage = () => {
         </div>
       </div>
       
+      <div className="px-4 pt-2 flex items-center justify-between">
+        <div className="hidden sm:flex items-center gap-2">
+          <Button 
+            variant={viewType === 'grid' ? 'default' : 'outline'} 
+            size="sm" 
+            onClick={() => setViewType('grid')}
+            className="flex items-center gap-1"
+          >
+            <LayoutGrid className="h-4 w-4" />
+            <span className="hidden md:inline">{t('grid_view')}</span>
+          </Button>
+          <Button 
+            variant={viewType === 'list' ? 'default' : 'outline'} 
+            size="sm" 
+            onClick={() => setViewType('list')}
+            className="flex items-center gap-1"
+          >
+            <List className="h-4 w-4" />
+            <span className="hidden md:inline">{t('list_view')}</span>
+          </Button>
+        </div>
+        
+        <div className="flex-grow"></div>
+        
+        <div className="flex items-center gap-2">
+          <DialogTrigger asChild>
+            <Button variant="outline" size="sm" className="flex items-center gap-1">
+              <Filter className="h-4 w-4" />
+              <span>{t('filter')}</span>
+            </Button>
+          </DialogTrigger>
+        </div>
+      </div>
       
-      
-      
-      
-      <main className="flex-1 px-4 pb-24 animate-fade-in">
+      <main className="flex-1 px-4 pb-24 animate-fade-in pt-4">
         <ProductListView products={filteredProducts} viewType={viewType} categoryId={categoryId} />
       </main>
       
       <BottomNavigation />
     </div>;
 };
+
 export default CategoryProductsPage;
