@@ -5,6 +5,7 @@ import BottomNavigation from '../components/BottomNavigation';
 import OfferCarousel from '../components/OfferCarousel';
 import CategorySection from '../components/CategorySection';
 import CartButton from '../components/CartButton';
+import SpecialOfferBanner from '../components/SpecialOfferBanner';
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       
       <main className="flex-1 pt-[20vh] pb-16 overflow-auto">
         <OfferCarousel />
+        <SpecialOfferBanner />
         <CategorySection />
       </main>
       
