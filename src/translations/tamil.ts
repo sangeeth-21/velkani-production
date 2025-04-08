@@ -1,6 +1,6 @@
 export const tamil = {
   // Header
-  'contact_whatsapp': 'வாட்ஸ்அப்:',
+  'contact_': 'வாட்ஸ்அப்:',
   'contact_phone': 'அழைப்பு:',
   'shop_title': 'மிடில் ஷாப்',
   

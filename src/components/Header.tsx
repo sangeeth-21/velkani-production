@@ -24,7 +24,7 @@ const Header = () => {
           <div className="flex items-center justify-center px-4">
             <div className="flex items-center justify-center">
               <Store className="h-6 w-6 mr-2 text-primary" />
-              <h1 className="text-2xl font-medium">Middle Shop</h1>
+              <h1 className="text-2xl font-medium">SriVelkani Store</h1>
             </div>
           </div>
           
@@ -32,7 +32,7 @@ const Header = () => {
             <div className="flex items-center justify-center space-x-6">
               <a href="https://wa.me/1234567890" className="flex items-center text-sm">
                 <MessageCircle className="h-4 w-4 mr-1" />
-                <span>{t('contact_whatsapp')} 1234567890</span>
+                <span>{t('contact_')} 1234567890</span>
               </a>
               
               <a href="tel:1234567890" className="flex items-center text-sm">

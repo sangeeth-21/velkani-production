@@ -1,8 +1,8 @@
 export const english = {
   // Header
-  'contact_whatsapp': 'WhatsApp:',
-  'contact_phone': 'Call:',
-  'shop_title': 'Middle Shop',
+  'contact_': ':',
+  'contact_phone': ':',
+  'shop_title': 'SriVelkani Store',
   
   // Navigation
   'nav_home': 'Home',
@@ -11,7 +11,7 @@ export const english = {
   'nav_profile': 'Profile',
   
   // Hero Section
-  'hero_title': 'Welcome to Middle Shop',
+  'hero_title': 'Welcome to SriVelkani Store',
   'hero_subtitle': 'Find the best products at the best prices',
   
   // Category Section

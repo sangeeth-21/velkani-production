@@ -1,6 +1,6 @@
 export const hindi = {
   // Header
-  'contact_whatsapp': 'व्हाट्सएप:',
+  'contact_': 'व्हाट्सएप:',
   'contact_phone': 'कॉल:',
   'shop_title': 'मिडिल शॉप',
   
