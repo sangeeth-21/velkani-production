@@ -1,0 +1,19 @@
+@media (min-width: 768px) {
+    .service-unavailable-container {
+      padding: 2rem;
+    }
+    
+    .animation-container {
+      max-width: 400px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .service-unavailable-container {
+      padding: 3rem;
+    }
+    
+    .animation-container {
+      max-width: 500px;
+    }
+  }

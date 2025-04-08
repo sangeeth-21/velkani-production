@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +15,8 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import CheckoutPage from "./pages/CheckoutPage";
 import LoginPage from "./pages/LoginPage";
+import ServiceUnavailable from "./pages/ServiceUnavailable";
+import InternetConnectionDetector from "./components/InternetConnectionDetector";
 
 const queryClient = new QueryClient();
 
@@ -37,8 +38,10 @@ const App = () => (
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/service-unavailable" element={<ServiceUnavailable />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <InternetConnectionDetector />
             </BrowserRouter>
           </AdminAuthProvider>
         </CartProvider>
