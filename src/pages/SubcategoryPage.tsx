@@ -21,7 +21,7 @@ const SubcategoryPage = () => {
     const fetchCategoryAndSubcategories = async () => {
       try {
         // Get all categories first
-        const categoryRes = await fetch('https://ghost.a1h.in/api/index.php?action=get_categories');
+        const categoryRes = await fetch('https://srivelkanistore.site/api/index.php?action=get_categories');
         const categoryJson = await categoryRes.json();
 
         if (categoryJson.status === 'success') {
@@ -29,7 +29,7 @@ const SubcategoryPage = () => {
           setCategory(found);
 
           // Fetch subcategories for that category
-          const subRes = await fetch(`https://ghost.a1h.in/api/index.php?action=get_subcategories&category_id=${categoryId}`);
+          const subRes = await fetch(`https://srivelkanistore.site/api/index.php?action=get_subcategories&category_id=${categoryId}`);
           const subJson = await subRes.json();
 
           if (subJson.status === 'success') {

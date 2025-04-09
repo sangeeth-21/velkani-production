@@ -56,7 +56,7 @@ const CategoryProductsPage = () => {
         setLoading(true);
         
         // Fetch products
-        const productsRes = await fetch(`https://ghost.a1h.in/api/index.php?action=get_products&subcategory_id=${subcategoryId}`);
+        const productsRes = await fetch(`https://srivelkanistore.site/api/index.php?action=get_products&subcategory_id=${subcategoryId}`);
         const productsJson = await productsRes.json();
         
         if (productsJson.status === 'success') {
@@ -64,7 +64,7 @@ const CategoryProductsPage = () => {
         }
 
         // Fetch category and subcategory details
-        const categoryRes = await fetch('https://ghost.a1h.in/api/index.php?action=get_categories');
+        const categoryRes = await fetch('https://srivelkanistore.site/api/index.php?action=get_categories');
         const categoryJson = await categoryRes.json();
 
         if (categoryJson.status === 'success') {
@@ -73,7 +73,7 @@ const CategoryProductsPage = () => {
             setCategory(foundCategory);
             
             // Fetch subcategories for that category
-            const subRes = await fetch(`https://ghost.a1h.in/api/index.php?action=get_subcategories&category_id=${categoryId}`);
+            const subRes = await fetch(`https://srivelkanistore.site/api/index.php?action=get_subcategories&category_id=${categoryId}`);
             const subJson = await subRes.json();
 
             if (subJson.status === 'success') {

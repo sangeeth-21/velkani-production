@@ -14,7 +14,7 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch('https://ghost.a1h.in/api/index.php?action=get_categories');
+        const res = await fetch('https://srivelkanistore.site/api/index.php?action=get_categories');
         const json = await res.json();
         if (json.status === 'success') {
           setCategories(json.data);
