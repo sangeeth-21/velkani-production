@@ -14,6 +14,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import ProductListView from '../components/ProductListView';
 import { useIsMobile } from '../hooks/use-mobile';
 
+interface ProductImage {
+  id: string;
+  image_url: string;
+  display_order: string;
+}
+
+interface PricePoint {
+  id: string;
+  quantity: string;
+  price: string;
+}
+
 interface Product {
   id: string;
   category_id: string;
@@ -22,11 +34,8 @@ interface Product {
   description: string;
   created_at: string;
   updated_at: string;
-  images: string[];
-  price_points: {
-    quantity: string;
-    price: string;
-  }[];
+  images: ProductImage[];
+  price_points: PricePoint[];
 }
 
 interface Category {
@@ -123,7 +132,7 @@ const CategoryProductsPage = () => {
     unit: product.price_points[0]?.quantity || '',
     rating: 4.0, // Default rating since API doesn't provide
     numReviews: 0, // Default since API doesn't provide
-    image: product.images[0] || '', // Use first image
+    image: product.images[0]?.image_url || '', // Use first image's URL
     categoryId: product.category_id,
     subcategoryId: product.subcategory_id,
     inStock: true, // Assume in stock
@@ -132,7 +141,9 @@ const CategoryProductsPage = () => {
     weightOptions: product.price_points.map(pp => ({
       value: pp.quantity,
       price: parseFloat(pp.price)
-    }))
+    })),
+    // Add all images for product details view
+    allImages: product.images.map(img => img.image_url)
   }));
 
   return (
@@ -199,7 +210,11 @@ const CategoryProductsPage = () => {
             <p className="text-muted-foreground">{t('no_products_in_category', 'There are no products in this category yet.')}</p>
           </div>
         ) : (
-          <ProductListView products={transformedProducts} viewType={viewType} categoryId={categoryId || ''} />
+          <ProductListView 
+            products={transformedProducts} 
+            viewType={viewType} 
+            categoryId={categoryId || ''} 
+          />
         )}
       </main>
       
