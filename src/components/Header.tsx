@@ -30,14 +30,14 @@ const Header = () => {
           
           <div className="flex items-center justify-center px-4 py-2">
             <div className="flex items-center justify-center space-x-6">
-              <a href="https://wa.me/1234567890" className="flex items-center text-sm">
+              <a href="https://wa.me/+919025301089" className="flex items-center text-sm">
                 <MessageCircle className="h-4 w-4 mr-1" />
-                <span>{t('contact_')} 1234567890</span>
+                <span>{t('contact_')} 9025301089</span>
               </a>
               
-              <a href="tel:1234567890" className="flex items-center text-sm">
+              <a href="tel:9092221102" className="flex items-center text-sm">
                 <Phone className="h-4 w-4 mr-1" />
-                <span>{t('contact_phone')} 1234567890</span>
+                <span>{t('contact_phone')} 9092221102</span>
               </a>
             </div>
           </div>
