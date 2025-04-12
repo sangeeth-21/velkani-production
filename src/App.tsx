@@ -14,6 +14,8 @@ import OrdersPage from "./pages/OrdersPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import CheckoutPage from "./pages/CheckoutPage";
+import SpecialOffersPage from "./pages/offerproduct";
+import Allproduct from "./pages/Allproducts";
 import LoginPage from "./pages/LoginPage";
 import ServiceUnavailable from "./pages/ServiceUnavailable";
 import InternetConnectionDetector from "./components/InternetConnectionDetector";
@@ -37,6 +39,8 @@ const App = () => (
                 <Route path="/orders" element={<OrdersPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/offer" element={<SpecialOffersPage />} />
+                <Route path="/allproducts" element={<Allproduct />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/service-unavailable" element={<ServiceUnavailable />} />
                 <Route path="*" element={<NotFound />} />

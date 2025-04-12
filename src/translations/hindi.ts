@@ -1,7 +1,7 @@
 export const hindi = {
   // Header
-  'contact_': 'व्हाट्सएप:',
-  'contact_phone': 'कॉल:',
+  'contact_': ':',
+  'contact_phone': ':',
   'shop_title': 'मिडिल शॉप',
   
   // Navigation
