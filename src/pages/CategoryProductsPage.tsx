@@ -22,7 +22,7 @@ interface PricePoint {
   id: string;
   quantity: string;
   price: string;
-  mrp: string; // Added MRP field
+  mrp: string;
   original_price?: string;
 }
 
@@ -54,7 +54,7 @@ interface TransformedProduct {
   name: string;
   description: string;
   price: number;
-  mrp: number; // Added MRP field
+  mrp: number;
   unit: string;
   rating: number;
   numReviews: number;
@@ -64,9 +64,9 @@ interface TransformedProduct {
   inStock: boolean;
   isBestSeller: boolean;
   isOrganic: boolean;
-  weightOptions: { value: string; price: number; mrp: number }[]; // Added MRP to weight options
+  weightOptions: { value: string; price: number; mrp: number }[];
   allImages: string[];
-  selectedWeight?: { value: string; price: number; mrp: number }; // Added MRP to selected weight
+  selectedWeight?: { value: string; price: number; mrp: number };
 }
 
 interface CartItem {
@@ -97,7 +97,6 @@ const CategoryProductsPage = () => {
       try {
         setLoading(true);
         
-        // Fetch products
         const productsRes = await fetch(`https://srivelkanistore.site/api/index.php?action=get_products&subcategory_id=${subcategoryId}`);
         const productsJson = await productsRes.json();
         
@@ -107,7 +106,7 @@ const CategoryProductsPage = () => {
             name: product.name,
             description: product.description,
             price: parseFloat(product.price_points[0]?.price || '0'),
-            mrp: parseFloat(product.price_points[0]?.mrp || '0'), // Added MRP
+            mrp: parseFloat(product.price_points[0]?.mrp || '0'),
             unit: product.price_points[0]?.quantity || '',
             rating: 4.0,
             numReviews: 0,
@@ -120,19 +119,18 @@ const CategoryProductsPage = () => {
             weightOptions: product.price_points.map(pp => ({
               value: pp.quantity,
               price: parseFloat(pp.price),
-              mrp: parseFloat(pp.mrp) // Added MRP
+              mrp: parseFloat(pp.mrp)
             })),
             allImages: product.images.map(img => img.image_url),
             selectedWeight: product.price_points[0] ? {
               value: product.price_points[0].quantity,
               price: parseFloat(product.price_points[0].price),
-              mrp: parseFloat(product.price_points[0].mrp) // Added MRP
+              mrp: parseFloat(product.price_points[0].mrp)
             } : undefined
           }));
           setProducts(transformed);
         }
 
-        // Fetch category details
         const categoryRes = await fetch('https://srivelkanistore.site/api/index.php?action=get_categories');
         const categoryJson = await categoryRes.json();
 
@@ -141,7 +139,6 @@ const CategoryProductsPage = () => {
           if (foundCategory) {
             setCategory(foundCategory);
             
-            // Fetch subcategories
             const subRes = await fetch(`https://srivelkanistore.site/api/index.php?action=get_subcategories&category_id=${categoryId}`);
             const subJson = await subRes.json();
 
@@ -348,10 +345,21 @@ const CategoryProductsPage = () => {
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex flex-col">
                       <div className="flex items-center">
-                        <span className="font-bold text-lg text-primary">₹{product.price.toFixed(2)}</span>
-                        {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price && (
-                          <span className="ml-2 text-sm text-gray-500 line-through">
-                            ₹{product.selectedWeight.mrp.toFixed(2)}
+                        {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price ? (
+                          <>
+                            <div className="flex flex-col">
+                              <span className="font-bold text-lg text-primary">
+                                ₹{product.selectedWeight.price.toFixed(2)}
+                              </span>
+                              <span className="text-sm text-gray-500">
+  MRP ₹<span className="line-through">{product.selectedWeight.mrp.toFixed(2)}</span>
+</span>
+
+                            </div>
+                          </>
+                        ) : (
+                          <span className="font-bold text-lg text-primary">
+                            Price ₹{product.selectedWeight?.price.toFixed(2) || product.price.toFixed(2)}
                           </span>
                         )}
                       </div>
@@ -379,11 +387,16 @@ const CategoryProductsPage = () => {
                       <SelectContent>
                         {product.weightOptions.map(option => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.value} - ₹{option.price.toFixed(2)}{' '}
-                            {option.mrp > option.price && (
-                              <span className="text-xs text-gray-500 line-through ml-1">
-                                ₹{option.mrp.toFixed(2)}
-                              </span>
+                            {option.value} - 
+                            {option.mrp > option.price ? (
+                              <>
+                                <span className="text-primary ml-1">₹{option.price.toFixed(2)}</span>
+                                <span className="text-xs text-gray-500 line-through ml-1">
+                                   ₹{option.mrp.toFixed(2)}
+                                </span>
+                              </>
+                            ) : (
+                              <span className="text-primary ml-1">₹{option.price.toFixed(2)}</span>
                             )}
                           </SelectItem>
                         ))}
@@ -434,10 +447,20 @@ const CategoryProductsPage = () => {
                   </Link>
                   <div className="mt-2 flex flex-col">
                     <div className="flex items-center">
-                      <span className="font-bold text-lg text-primary">₹{product.price.toFixed(2)}</span>
-                      {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price && (
-                        <span className="ml-2 text-sm text-gray-500 line-through">
-                          ₹{product.selectedWeight.mrp.toFixed(2)}
+                      {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price ? (
+                        <>
+                          <div className="flex flex-col">
+                            <span className="font-bold text-lg text-primary">
+                              Price ₹{product.selectedWeight.price.toFixed(2)}
+                            </span>
+                            <span className="text-sm text-gray-500 line-through">
+                              MRP ₹{product.selectedWeight.mrp.toFixed(2)}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <span className="font-bold text-lg text-primary">
+                          Price ₹{product.selectedWeight?.price.toFixed(2) || product.price.toFixed(2)}
                         </span>
                       )}
                     </div>
@@ -458,11 +481,16 @@ const CategoryProductsPage = () => {
                       <SelectContent>
                         {product.weightOptions.map(option => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.value} - ₹{option.price.toFixed(2)}{' '}
-                            {option.mrp > option.price && (
-                              <span className="text-xs text-gray-500 line-through ml-1">
-                                ₹{option.mrp.toFixed(2)}
-                              </span>
+                            {option.value} - 
+                            {option.mrp > option.price ? (
+                              <>
+                                <span className="text-primary ml-1">₹{option.price.toFixed(2)}</span>
+                                <span className="text-xs text-gray-500 line-through ml-1">
+                                  MRP ₹{option.mrp.toFixed(2)}
+                                </span>
+                              </>
+                            ) : (
+                              <span className="text-primary ml-1">₹{option.price.toFixed(2)}</span>
                             )}
                           </SelectItem>
                         ))}

@@ -18,6 +18,7 @@ import { Separator } from '../components/ui/separator';
 import { Card, CardContent } from '../components/ui/card';
 import { ScrollArea } from '../components/ui/scroll-area';
 import { Label } from '../components/ui/label';
+import Cookies from 'js-cookie';
 
 type DeliveryMethod = 'pickup' | 'delivery';
 
@@ -29,8 +30,25 @@ const CheckoutPage = () => {
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('pickup');
   const [canDeliver, setCanDeliver] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [userUuid, setUserUuid] = useState('');
   const navigate = useNavigate();
   
+  // Get user details from cookies
+  useEffect(() => {
+    const userUuid = Cookies.get('user_uuid') || '';
+    const userName = Cookies.get('user_name') || '';
+    const userPhone = Cookies.get('user_phone') || '';
+    
+    setUserUuid(userUuid);
+    
+    // Set form default values from cookies if available
+    form.reset({
+      ...form.getValues(),
+      name: userName,
+      phone: userPhone,
+    });
+  }, []);
+
   // Check if order total is above 2000 to enable door delivery
   useEffect(() => {
     if (cartState.totalAmount >= 2000) {
@@ -47,7 +65,6 @@ const CheckoutPage = () => {
     phone: z.string().min(10, { message: t('valid_phone_required') }).max(15),
     address: deliveryMethod === 'delivery' ? z.string().min(1, { message: t('address_required') }) : z.string().optional(),
     pincode: deliveryMethod === 'delivery' ? z.string().min(6, { message: t('valid_pincode_required') }).max(6) : z.string().optional(),
-    deliveryTime: deliveryMethod === 'pickup' ? z.string().min(1, { message: t('pickup_time_required') }) : z.string().optional(),
     paymentMethod: z.enum(['cod', 'online']),
   });
 
@@ -60,7 +77,6 @@ const CheckoutPage = () => {
       phone: '',
       address: '',
       pincode: '',
-      deliveryTime: '',
       paymentMethod: 'cod',
     }
   });
@@ -70,7 +86,7 @@ const CheckoutPage = () => {
     form.trigger();
   }, [deliveryMethod, form]);
   
-  const onSubmit = (data: CheckoutFormValues) => {
+  const onSubmit = async (data: CheckoutFormValues) => {
     if (cartState.items.length === 0) {
       toast({
         title: t('error'),
@@ -80,27 +96,84 @@ const CheckoutPage = () => {
       return;
     }
     
+    if (!userUuid) {
+      toast({
+        title: t('error'),
+        description: t('user_not_identified'),
+        variant: 'destructive',
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setOrderSuccess(true);
+    try {
+      // Prepare order items for API
+      const orderItems = cartState.items.map(item => ({
+        productname: item.name,
+        productuid: item.productId,
+        amount: item.price,
+        quantity: item.quantity,
+        weight: item.weight
+      }));
       
-      toast({
-        title: t('order_success'),
-        description: deliveryMethod === 'pickup' 
-          ? t('order_pickup_success') 
-          : t('order_delivery_success'),
+      // Prepare order data for API
+      const orderData = {
+        action: 'create_order',
+        uiduser: userUuid,
+        items: orderItems,
+        delivery_type: deliveryMethod,
+        payment_method: data.paymentMethod,
+        customer_name: data.name,
+        customer_phone: data.phone,
+        ...(deliveryMethod === 'delivery' && {
+          delivery_address: data.address,
+          delivery_pincode: data.pincode
+        })
+      };
+      
+      // Save user details to cookies for future use
+      Cookies.set('user_name', data.name, { expires: 30 });
+      Cookies.set('user_phone', data.phone, { expires: 30 });
+      
+      // Make API call
+      const response = await fetch('https://srivelkanistore.site/api/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData)
       });
       
-      clearCart();
+      const result = await response.json();
       
-      // Redirect after short delay to show success message
-      setTimeout(() => {
-        navigate('/orders');
-      }, 3000);
-    }, 1500);
+      if (result.status === 'success') {
+        setOrderSuccess(true);
+        clearCart();
+        
+        toast({
+          title: t('order_success'),
+          description: deliveryMethod === 'pickup' 
+            ? t('order_pickup_success') 
+            : t('order_delivery_success'),
+        });
+        
+        // Redirect after short delay to show success message
+        setTimeout(() => {
+          navigate('/orders');
+        }, 3000);
+      } else {
+        throw new Error(result.message || t('order_failed'));
+      }
+    } catch (error) {
+      toast({
+        title: t('error'),
+        description: error instanceof Error ? error.message : t('order_failed'),
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   if (orderSuccess) {
@@ -329,25 +402,6 @@ const CheckoutPage = () => {
                         )}
                       />
                     </>
-                  )}
-
-                  {deliveryMethod === 'pickup' && (
-                    <FormField
-                      control={form.control}
-                      name="deliveryTime"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('pickup_time')}</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="datetime-local"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                   )}
                   
                   <div className="mt-6">
