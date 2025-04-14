@@ -22,6 +22,7 @@ interface PricePoint {
   id: string;
   quantity: string;
   price: string;
+  mrp: string; // Added MRP field
   original_price?: string;
 }
 
@@ -53,7 +54,7 @@ interface TransformedProduct {
   name: string;
   description: string;
   price: number;
-  oldPrice: number | null;
+  mrp: number; // Added MRP field
   unit: string;
   rating: number;
   numReviews: number;
@@ -63,9 +64,9 @@ interface TransformedProduct {
   inStock: boolean;
   isBestSeller: boolean;
   isOrganic: boolean;
-  weightOptions: { value: string; price: number }[];
+  weightOptions: { value: string; price: number; mrp: number }[]; // Added MRP to weight options
   allImages: string[];
-  selectedWeight?: { value: string; price: number };
+  selectedWeight?: { value: string; price: number; mrp: number }; // Added MRP to selected weight
 }
 
 interface CartItem {
@@ -73,6 +74,7 @@ interface CartItem {
   productId: string;
   name: string;
   price: number;
+  mrp: number;
   quantity: number;
   image: string;
   weight: string;
@@ -105,9 +107,7 @@ const CategoryProductsPage = () => {
             name: product.name,
             description: product.description,
             price: parseFloat(product.price_points[0]?.price || '0'),
-            oldPrice: product.price_points[0]?.original_price 
-              ? parseFloat(product.price_points[0].original_price) 
-              : null,
+            mrp: parseFloat(product.price_points[0]?.mrp || '0'), // Added MRP
             unit: product.price_points[0]?.quantity || '',
             rating: 4.0,
             numReviews: 0,
@@ -119,12 +119,14 @@ const CategoryProductsPage = () => {
             isOrganic: product.is_organic || false,
             weightOptions: product.price_points.map(pp => ({
               value: pp.quantity,
-              price: parseFloat(pp.price)
+              price: parseFloat(pp.price),
+              mrp: parseFloat(pp.mrp) // Added MRP
             })),
             allImages: product.images.map(img => img.image_url),
             selectedWeight: product.price_points[0] ? {
               value: product.price_points[0].quantity,
-              price: parseFloat(product.price_points[0].price)
+              price: parseFloat(product.price_points[0].price),
+              mrp: parseFloat(product.price_points[0].mrp) // Added MRP
             } : undefined
           }));
           setProducts(transformed);
@@ -169,7 +171,8 @@ const CategoryProductsPage = () => {
           return {
             ...product,
             selectedWeight: selected,
-            price: selected ? selected.price : product.price
+            price: selected ? selected.price : product.price,
+            mrp: selected ? selected.mrp : product.mrp
           };
         }
         return product;
@@ -185,6 +188,7 @@ const CategoryProductsPage = () => {
       productId: product.id,
       name: product.name,
       price: product.selectedWeight.price,
+      mrp: product.selectedWeight.mrp,
       quantity: 1,
       image: product.image,
       weight: product.selectedWeight.value
@@ -205,6 +209,11 @@ const CategoryProductsPage = () => {
         </Button>
       ),
     });
+  };
+
+  const calculateDiscountPercentage = (mrp: number, price: number) => {
+    if (mrp <= 0 || price >= mrp) return 0;
+    return Math.round(((mrp - price) / mrp) * 100);
   };
 
   if (loading) {
@@ -312,7 +321,7 @@ const CategoryProductsPage = () => {
         ) : viewType === 'grid' ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products.map(product => (
-              <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+              <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
                 <Link to={`/product/${product.id}`} className="block">
                   <div className="aspect-square bg-gray-100 relative overflow-hidden">
                     <img 
@@ -325,6 +334,11 @@ const CategoryProductsPage = () => {
                         Best Seller
                       </Badge>
                     )}
+                    {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price && (
+                      <Badge variant="destructive" className="absolute top-2 right-2">
+                        {calculateDiscountPercentage(product.selectedWeight.mrp, product.selectedWeight.price)}% OFF
+                      </Badge>
+                    )}
                   </div>
                 </Link>
                 <div className="p-3">
@@ -332,11 +346,18 @@ const CategoryProductsPage = () => {
                     <h3 className="font-medium line-clamp-2 mb-1">{product.name}</h3>
                   </Link>
                   <div className="flex items-center justify-between mt-2">
-                    <div>
-                      <span className="font-bold text-lg">₹{product.price.toFixed(2)}</span>
-                      {product.oldPrice && (
-                        <span className="ml-2 text-sm text-gray-500 line-through">
-                          ₹{product.oldPrice.toFixed(2)}
+                    <div className="flex flex-col">
+                      <div className="flex items-center">
+                        <span className="font-bold text-lg text-primary">₹{product.price.toFixed(2)}</span>
+                        {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price && (
+                          <span className="ml-2 text-sm text-gray-500 line-through">
+                            ₹{product.selectedWeight.mrp.toFixed(2)}
+                          </span>
+                        )}
+                      </div>
+                      {product.selectedWeight && (
+                        <span className="text-xs text-gray-500 mt-1">
+                          {product.selectedWeight.value}
                         </span>
                       )}
                     </div>
@@ -358,7 +379,12 @@ const CategoryProductsPage = () => {
                       <SelectContent>
                         {product.weightOptions.map(option => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.value} - ₹{option.price.toFixed(2)}
+                            {option.value} - ₹{option.price.toFixed(2)}{' '}
+                            {option.mrp > option.price && (
+                              <span className="text-xs text-gray-500 line-through ml-1">
+                                ₹{option.mrp.toFixed(2)}
+                              </span>
+                            )}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -382,7 +408,7 @@ const CategoryProductsPage = () => {
         ) : (
           <div className="space-y-4">
             {products.map(product => (
-              <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 flex">
+              <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 flex hover:shadow-md transition-shadow">
                 <Link to={`/product/${product.id}`} className="block w-1/3">
                   <div className="aspect-square bg-gray-100 relative overflow-hidden">
                     <img 
@@ -390,17 +416,34 @@ const CategoryProductsPage = () => {
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />
+                    {product.isBestSeller && (
+                      <Badge className="absolute top-2 left-2 bg-amber-500 hover:bg-amber-600">
+                        Best Seller
+                      </Badge>
+                    )}
+                    {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price && (
+                      <Badge variant="destructive" className="absolute top-2 right-2">
+                        {calculateDiscountPercentage(product.selectedWeight.mrp, product.selectedWeight.price)}% OFF
+                      </Badge>
+                    )}
                   </div>
                 </Link>
                 <div className="p-4 flex-1 flex flex-col">
                   <Link to={`/product/${product.id}`} className="block">
                     <h3 className="font-medium line-clamp-2">{product.name}</h3>
                   </Link>
-                  <div className="mt-2">
-                    <span className="font-bold text-lg">₹{product.price.toFixed(2)}</span>
-                    {product.oldPrice && (
-                      <span className="ml-2 text-sm text-gray-500 line-through">
-                        ₹{product.oldPrice.toFixed(2)}
+                  <div className="mt-2 flex flex-col">
+                    <div className="flex items-center">
+                      <span className="font-bold text-lg text-primary">₹{product.price.toFixed(2)}</span>
+                      {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price && (
+                        <span className="ml-2 text-sm text-gray-500 line-through">
+                          ₹{product.selectedWeight.mrp.toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                    {product.selectedWeight && (
+                      <span className="text-xs text-gray-500 mt-1">
+                        {product.selectedWeight.value}
                       </span>
                     )}
                   </div>
@@ -415,7 +458,12 @@ const CategoryProductsPage = () => {
                       <SelectContent>
                         {product.weightOptions.map(option => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.value} - ₹{option.price.toFixed(2)}
+                            {option.value} - ₹{option.price.toFixed(2)}{' '}
+                            {option.mrp > option.price && (
+                              <span className="text-xs text-gray-500 line-through ml-1">
+                                ₹{option.mrp.toFixed(2)}
+                              </span>
+                            )}
                           </SelectItem>
                         ))}
                       </SelectContent>
