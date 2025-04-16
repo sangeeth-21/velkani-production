@@ -24,7 +24,8 @@ const ProfilePage = () => {
     
     if (userToken && storedUserData) {
       try {
-        setUserData(JSON.parse(storedUserData));
+        const parsedData = JSON.parse(storedUserData);
+        setUserData(parsedData);
       } catch (err) {
         console.error('Error parsing user data:', err);
         fetchUserData(userToken);
@@ -39,18 +40,23 @@ const ProfilePage = () => {
   const fetchUserData = async (uid) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://srivelkanistore.site/api/user.php?action=get_users`);
+      const response = await fetch(`https://srivelkanistore.site/api/user.php?uid=${uid}`);
       const data = await response.json();
       
       if (data.status === 'success') {
-        const user = data.data.find(user => user.uid === uid);
-        if (user) {
-          setUserData(user);
-          Cookies.set('userData', JSON.stringify(user), { expires: 30 });
-        } else {
-          Cookies.remove('userToken');
-          setShowPhonePopup(true);
-        }
+        const user = {
+          uid: data.data.uid,
+          name: data.data.name,
+          number: data.data.number,
+          createdAt: data.data.created_at,
+          updatedAt: data.data.updated_at
+        };
+        
+        setUserData(user);
+        Cookies.set('userData', JSON.stringify(user), { expires: 30 });
+      } else {
+        Cookies.remove('userToken');
+        setShowPhonePopup(true);
       }
     } catch (err) {
       setError('Failed to fetch user data');
@@ -70,20 +76,24 @@ const ProfilePage = () => {
       setLoading(true);
       setError('');
       
-      const response = await fetch(`https://srivelkanistore.site/api/user.php?action=get_users`);
+      const response = await fetch(`https://srivelkanistore.site/api/user.php?number=${phoneNumber}`);
       const data = await response.json();
       
       if (data.status === 'success') {
-        const user = data.data.find(user => user.number === phoneNumber);
+        const user = {
+          uid: data.data.uid,
+          name: data.data.name,
+          number: data.data.number,
+          createdAt: data.data.created_at,
+          updatedAt: data.data.updated_at
+        };
         
-        if (user) {
-          Cookies.set('userToken', user.uid, { expires: 30 });
-          Cookies.set('userData', JSON.stringify(user), { expires: 30 });
-          setUserData(user);
-          setShowPhonePopup(false);
-        } else {
-          setShowNameInput(true);
-        }
+        Cookies.set('userToken', user.uid, { expires: 30 });
+        Cookies.set('userData', JSON.stringify(user), { expires: 30 });
+        setUserData(user);
+        setShowPhonePopup(false);
+      } else {
+        setShowNameInput(true);
       }
     } catch (err) {
       setError('Failed to verify phone number');
@@ -126,7 +136,7 @@ const ProfilePage = () => {
           updatedAt: data.data.updated_at
         };
         
-        Cookies.set('userToken', data.data.uid, { expires: 30 });
+        Cookies.set('userToken', newUser.uid, { expires: 30 });
         Cookies.set('userData', JSON.stringify(newUser), { expires: 30 });
         
         setUserData(newUser);
@@ -228,9 +238,7 @@ const ProfilePage = () => {
                   <div>
                     <h2 className="font-medium">{userData.name}</h2>
                     <p className="text-sm text-muted-foreground">{userData.number}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Member since: {new Date(userData.createdAt).toLocaleDateString()}
-                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">UID: {userData.uid}</p>
                   </div>
                 </div>
                 <button 

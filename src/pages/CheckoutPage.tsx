@@ -86,6 +86,45 @@ const CheckoutPage = () => {
     form.trigger();
   }, [deliveryMethod, form]);
   
+  // Save checkout progress in cookies when user enters information
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      if (value.name) Cookies.set('checkout_name', value.name, { expires: 1 });
+      if (value.phone) Cookies.set('checkout_phone', value.phone, { expires: 1 });
+      if (value.address) Cookies.set('checkout_address', value.address, { expires: 1 });
+      if (value.pincode) Cookies.set('checkout_pincode', value.pincode, { expires: 1 });
+      Cookies.set('checkout_payment', value.paymentMethod || 'cod', { expires: 1 });
+    });
+    
+    // Load checkout progress from cookies if available
+    const checkoutName = Cookies.get('checkout_name');
+    const checkoutPhone = Cookies.get('checkout_phone');
+    const checkoutAddress = Cookies.get('checkout_address');
+    const checkoutPincode = Cookies.get('checkout_pincode');
+    const checkoutPayment = Cookies.get('checkout_payment') as 'cod' | 'online';
+    
+    if (checkoutName || checkoutPhone || checkoutAddress || checkoutPincode || checkoutPayment) {
+      form.reset({
+        name: checkoutName || form.getValues().name,
+        phone: checkoutPhone || form.getValues().phone,
+        address: checkoutAddress || form.getValues().address,
+        pincode: checkoutPincode || form.getValues().pincode,
+        paymentMethod: checkoutPayment || form.getValues().paymentMethod,
+      });
+    }
+    
+    // Save delivery method in cookie
+    Cookies.set('checkout_delivery_method', deliveryMethod, { expires: 1 });
+    
+    // Load delivery method from cookie if available
+    const savedDeliveryMethod = Cookies.get('checkout_delivery_method') as DeliveryMethod;
+    if (savedDeliveryMethod && (savedDeliveryMethod === 'pickup' || (savedDeliveryMethod === 'delivery' && canDeliver))) {
+      setDeliveryMethod(savedDeliveryMethod);
+    }
+    
+    return () => subscription.unsubscribe();
+  }, [form, deliveryMethod, canDeliver]);
+  
   const onSubmit = async (data: CheckoutFormValues) => {
     if (cartState.items.length === 0) {
       toast({
@@ -111,7 +150,7 @@ const CheckoutPage = () => {
       // Prepare order items for API
       const orderItems = cartState.items.map(item => ({
         productname: item.name,
-        productuid: item.productId,
+        productuid: item.id,  // Updated to match the CartItem type from CartContext
         amount: item.price,
         quantity: item.quantity,
         weight: item.weight
@@ -148,8 +187,17 @@ const CheckoutPage = () => {
       const result = await response.json();
       
       if (result.status === 'success') {
+        // Order successful - clear both cart and checkout data
         setOrderSuccess(true);
         clearCart();
+        
+        // Remove checkout cookies as order is complete
+        Cookies.remove('checkout_name');
+        Cookies.remove('checkout_phone');
+        Cookies.remove('checkout_address');
+        Cookies.remove('checkout_pincode');
+        Cookies.remove('checkout_payment');
+        Cookies.remove('checkout_delivery_method');
         
         toast({
           title: t('order_success'),
@@ -175,6 +223,26 @@ const CheckoutPage = () => {
       setIsSubmitting(false);
     }
   };
+  
+  // Function to resume checkout if browser was closed midway
+  const resumeCheckout = () => {
+    const checkoutName = Cookies.get('checkout_name');
+    const checkoutPhone = Cookies.get('checkout_phone');
+    
+    if (checkoutName || checkoutPhone) {
+      toast({
+        title: t('resume_checkout'),
+        description: t('previous_checkout_found'),
+      });
+    }
+  };
+  
+  // Check for any previous checkout data when page loads
+  useEffect(() => {
+    if (cartState.items.length > 0) {
+      resumeCheckout();
+    }
+  }, []);
   
   if (orderSuccess) {
     return (

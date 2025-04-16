@@ -1,6 +1,6 @@
-
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
 import { useToast } from '../hooks/use-toast';
+import Cookies from 'js-cookie';
 
 // Define cart item type
 export type CartItem = {
@@ -33,10 +33,17 @@ type CartAction =
   | { type: 'ADD_ITEM'; payload: CartItem }
   | { type: 'REMOVE_ITEM'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  | { type: 'INITIALIZE_CART'; payload: CartState };
 
 // Create cart context
 const CartContext = createContext<CartContextType | undefined>(undefined);
+
+// Cookie name
+const CART_COOKIE_NAME = 'shopping_cart';
+
+// Cookie expiration in days
+const COOKIE_EXPIRATION_DAYS = 30;
 
 // Initial cart state
 const initialCartState: CartState = {
@@ -52,8 +59,31 @@ const calculateTotals = (items: CartItem[]): { totalItems: number; totalAmount: 
   return { totalItems, totalAmount };
 };
 
+// Save cart to cookie
+const saveCartToCookie = (cartState: CartState) => {
+  Cookies.set(CART_COOKIE_NAME, JSON.stringify(cartState), { 
+    expires: COOKIE_EXPIRATION_DAYS,
+    sameSite: 'strict'
+  });
+};
+
+// Load cart from cookie
+const loadCartFromCookie = (): CartState => {
+  const savedCart = Cookies.get(CART_COOKIE_NAME);
+  if (savedCart) {
+    try {
+      return JSON.parse(savedCart);
+    } catch (error) {
+      console.error('Failed to parse cart from cookie:', error);
+    }
+  }
+  return initialCartState;
+};
+
 // Cart reducer
 const cartReducer = (state: CartState, action: CartAction): CartState => {
+  let newState: CartState;
+  
   switch (action.type) {
     case 'ADD_ITEM': {
       const existingItemIndex = state.items.findIndex(
@@ -75,13 +105,15 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       }
       
       const { totalItems, totalAmount } = calculateTotals(updatedItems);
-      return { items: updatedItems, totalItems, totalAmount };
+      newState = { items: updatedItems, totalItems, totalAmount };
+      break;
     }
     
     case 'REMOVE_ITEM': {
       const updatedItems = state.items.filter(item => item.id !== action.payload);
       const { totalItems, totalAmount } = calculateTotals(updatedItems);
-      return { items: updatedItems, totalItems, totalAmount };
+      newState = { items: updatedItems, totalItems, totalAmount };
+      break;
     }
     
     case 'UPDATE_QUANTITY': {
@@ -91,21 +123,39 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
           : item
       );
       const { totalItems, totalAmount } = calculateTotals(updatedItems);
-      return { items: updatedItems, totalItems, totalAmount };
+      newState = { items: updatedItems, totalItems, totalAmount };
+      break;
     }
     
     case 'CLEAR_CART':
-      return initialCartState;
+      newState = initialCartState;
+      break;
+      
+    case 'INITIALIZE_CART':
+      newState = action.payload;
+      break;
       
     default:
       return state;
   }
+  
+  // Save the updated cart state to cookie
+  saveCartToCookie(newState);
+  return newState;
 };
 
 // Cart provider component
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartState, dispatch] = useReducer(cartReducer, initialCartState);
   const { toast } = useToast();
+  
+  // Load cart from cookie on initial render
+  useEffect(() => {
+    const savedCart = loadCartFromCookie();
+    if (savedCart.items.length > 0) {
+      dispatch({ type: 'INITIALIZE_CART', payload: savedCart });
+    }
+  }, []);
   
   const addToCart = (item: CartItem) => {
     dispatch({ type: 'ADD_ITEM', payload: item });
