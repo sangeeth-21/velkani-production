@@ -119,7 +119,7 @@ const OrdersPage = () => {
         <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <h1 className="text-xl font-medium">{t('orders_title')}</h1>
+        <h1 className="text-xl font-medium">{t('orders_Orders')}</h1>
       </div>
       
       <main className="flex-1 py-4 px-4 pb-20">

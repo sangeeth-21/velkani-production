@@ -30,26 +30,21 @@ const CheckoutPage = () => {
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('pickup');
   const [canDeliver, setCanDeliver] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [userUuid, setUserUuid] = useState('');
   const navigate = useNavigate();
-  
-  // Get user details from cookies
-  useEffect(() => {
-    const userUuid = Cookies.get('user_uuid') || '';
-    const userName = Cookies.get('user_name') || '';
-    const userPhone = Cookies.get('user_phone') || '';
-    
-    setUserUuid(userUuid);
-    
-    // Set form default values from cookies if available
-    form.reset({
-      ...form.getValues(),
-      name: userName,
-      phone: userPhone,
-    });
-  }, []);
 
-  // Check if order total is above 2000 to enable door delivery
+  // Check for user authentication on mount
+  useEffect(() => {
+    const userToken = Cookies.get('userToken');
+    if (!userToken) {
+      toast({
+        title: t('Authentication Required'),
+        description: t('Please login to continue with checkout'),
+        variant: 'destructive',
+      });
+      navigate('/login', { state: { from: '/checkout' } });
+    }
+  }, [navigate, toast, t]);
+
   useEffect(() => {
     if (cartState.totalAmount >= 2000) {
       setCanDeliver(true);
@@ -58,8 +53,7 @@ const CheckoutPage = () => {
       setDeliveryMethod('pickup');
     }
   }, [cartState.totalAmount]);
-  
-  // Form validation schema
+
   const formSchema = z.object({
     name: z.string().min(3, { message: t('name_required') }),
     phone: z.string().min(10, { message: t('valid_phone_required') }).max(15),
@@ -69,7 +63,7 @@ const CheckoutPage = () => {
   });
 
   type CheckoutFormValues = z.infer<typeof formSchema>;
-  
+
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,51 +74,11 @@ const CheckoutPage = () => {
       paymentMethod: 'cod',
     }
   });
-  
-  // Update form validation when delivery method changes
+
   useEffect(() => {
     form.trigger();
   }, [deliveryMethod, form]);
-  
-  // Save checkout progress in cookies when user enters information
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      if (value.name) Cookies.set('checkout_name', value.name, { expires: 1 });
-      if (value.phone) Cookies.set('checkout_phone', value.phone, { expires: 1 });
-      if (value.address) Cookies.set('checkout_address', value.address, { expires: 1 });
-      if (value.pincode) Cookies.set('checkout_pincode', value.pincode, { expires: 1 });
-      Cookies.set('checkout_payment', value.paymentMethod || 'cod', { expires: 1 });
-    });
-    
-    // Load checkout progress from cookies if available
-    const checkoutName = Cookies.get('checkout_name');
-    const checkoutPhone = Cookies.get('checkout_phone');
-    const checkoutAddress = Cookies.get('checkout_address');
-    const checkoutPincode = Cookies.get('checkout_pincode');
-    const checkoutPayment = Cookies.get('checkout_payment') as 'cod' | 'online';
-    
-    if (checkoutName || checkoutPhone || checkoutAddress || checkoutPincode || checkoutPayment) {
-      form.reset({
-        name: checkoutName || form.getValues().name,
-        phone: checkoutPhone || form.getValues().phone,
-        address: checkoutAddress || form.getValues().address,
-        pincode: checkoutPincode || form.getValues().pincode,
-        paymentMethod: checkoutPayment || form.getValues().paymentMethod,
-      });
-    }
-    
-    // Save delivery method in cookie
-    Cookies.set('checkout_delivery_method', deliveryMethod, { expires: 1 });
-    
-    // Load delivery method from cookie if available
-    const savedDeliveryMethod = Cookies.get('checkout_delivery_method') as DeliveryMethod;
-    if (savedDeliveryMethod && (savedDeliveryMethod === 'pickup' || (savedDeliveryMethod === 'delivery' && canDeliver))) {
-      setDeliveryMethod(savedDeliveryMethod);
-    }
-    
-    return () => subscription.unsubscribe();
-  }, [form, deliveryMethod, canDeliver]);
-  
+
   const onSubmit = async (data: CheckoutFormValues) => {
     if (cartState.items.length === 0) {
       toast({
@@ -134,32 +88,32 @@ const CheckoutPage = () => {
       });
       return;
     }
-    
-    if (!userUuid) {
+
+    const userToken = Cookies.get('userToken');
+    if (!userToken) {
       toast({
         title: t('error'),
-        description: t('user_not_identified'),
+        description: t('Please login to continue'),
         variant: 'destructive',
       });
+      navigate('/login', { state: { from: '/checkout' } });
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
-      // Prepare order items for API
       const orderItems = cartState.items.map(item => ({
         productname: item.name,
-        productuid: item.id,  // Updated to match the CartItem type from CartContext
+        productuid: item.id,
         amount: item.price,
         quantity: item.quantity,
         weight: item.weight
       }));
-      
-      // Prepare order data for API
+
       const orderData = {
         action: 'create_order',
-        uiduser: userUuid,
+        uiduser: userToken,
         items: orderItems,
         delivery_type: deliveryMethod,
         payment_method: data.paymentMethod,
@@ -170,43 +124,28 @@ const CheckoutPage = () => {
           delivery_pincode: data.pincode
         })
       };
-      
-      // Save user details to cookies for future use
-      Cookies.set('user_name', data.name, { expires: 30 });
-      Cookies.set('user_phone', data.phone, { expires: 30 });
-      
-      // Make API call
-      const response = await fetch('https://srivelkanistore.site/api/', {
+
+      const response = await fetch('https://srivelkanistore.site/api/user.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(orderData)
       });
-      
+
       const result = await response.json();
-      
+
       if (result.status === 'success') {
-        // Order successful - clear both cart and checkout data
         setOrderSuccess(true);
         clearCart();
-        
-        // Remove checkout cookies as order is complete
-        Cookies.remove('checkout_name');
-        Cookies.remove('checkout_phone');
-        Cookies.remove('checkout_address');
-        Cookies.remove('checkout_pincode');
-        Cookies.remove('checkout_payment');
-        Cookies.remove('checkout_delivery_method');
-        
+
         toast({
           title: t('order_success'),
           description: deliveryMethod === 'pickup' 
             ? t('order_pickup_success') 
             : t('order_delivery_success'),
         });
-        
-        // Redirect after short delay to show success message
+
         setTimeout(() => {
           navigate('/orders');
         }, 3000);
@@ -223,27 +162,7 @@ const CheckoutPage = () => {
       setIsSubmitting(false);
     }
   };
-  
-  // Function to resume checkout if browser was closed midway
-  const resumeCheckout = () => {
-    const checkoutName = Cookies.get('checkout_name');
-    const checkoutPhone = Cookies.get('checkout_phone');
-    
-    if (checkoutName || checkoutPhone) {
-      toast({
-        title: t('resume_checkout'),
-        description: t('previous_checkout_found'),
-      });
-    }
-  };
-  
-  // Check for any previous checkout data when page loads
-  useEffect(() => {
-    if (cartState.items.length > 0) {
-      resumeCheckout();
-    }
-  }, []);
-  
+
   if (orderSuccess) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
@@ -275,7 +194,7 @@ const CheckoutPage = () => {
       </div>
     );
   }
-  
+
   if (cartState.items.length === 0) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
@@ -305,7 +224,7 @@ const CheckoutPage = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <div className="pt-4 px-4 flex items-center justify-between">

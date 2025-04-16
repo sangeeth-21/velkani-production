@@ -227,7 +227,7 @@ const ProfilePage = () => {
         
         {userData ? (
           <>
-            <h1 className="text-xl font-medium mb-4">{t('profile_title')}</h1>
+            <h1 className="text-xl font-medium mb-4">{t('profile_Profile')}</h1>
             
             <div className="bg-card rounded-lg shadow-sm p-4 mb-4 animate-fade-in">
               <div className="flex items-center justify-between">
@@ -252,13 +252,6 @@ const ProfilePage = () => {
             
             <div className="space-y-2 animate-fade-in">
               <div className="bg-card rounded-lg shadow-sm">
-                <button 
-                  className="w-full flex items-center p-4 hover:bg-secondary/50 transition-colors"
-                  onClick={() => navigate('/edit-profile')}
-                >
-                  <Settings className="h-5 w-5 mr-3 text-muted-foreground" />
-                  <span>{t('profile_edit')}</span>
-                </button>
                 
                 <button 
                   className="w-full flex items-center p-4 hover:bg-secondary/50 transition-colors border-t"
