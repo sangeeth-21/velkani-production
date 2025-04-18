@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BottomNavigation from '../components/BottomNavigation';
-import { Package, ArrowLeft, Clock, CheckCircle, Truck, ShoppingBag, Loader2 } from 'lucide-react';
+import { Package, ArrowLeft, Clock, CheckCircle, Truck, ShoppingBag, Loader2, ChevronDown, ChevronUp, Scale } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { Badge } from "@/components/ui/badge";
@@ -53,6 +53,7 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [expandedOrder, setExpandedOrder] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,7 +69,15 @@ const OrdersPage = () => {
         const data = await response.json();
         
         if (data.status === 'success') {
-          setOrders(data.data);
+          // Add weight information to each item if not present
+          const processedOrders = data.data.map(order => ({
+            ...order,
+            items: order.items.map(item => ({
+              ...item,
+              weight: item.weight || 'N/A' // Default weight if not provided
+            }))
+          }));
+          setOrders(processedOrders);
         } else {
           setError(t('orders_fetch_error'));
         }
@@ -83,12 +92,17 @@ const OrdersPage = () => {
     fetchOrders();
   }, [t, navigate]);
 
+  const toggleOrderExpand = (orderId) => {
+    setExpandedOrder(expandedOrder === orderId ? null : orderId);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <Header />
-        <div className="flex-1 flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin" />
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="mt-2 text-sm text-muted-foreground">{t('loading_orders')}</p>
         </div>
       </div>
     );
@@ -100,10 +114,10 @@ const OrdersPage = () => {
         <Header />
         <div className="flex-1 flex flex-col items-center justify-center p-4">
           <Package className="h-12 w-12 text-muted-foreground mb-2" />
-          <p className="text-muted-foreground mb-4">{error}</p>
+          <p className="text-muted-foreground mb-4 text-center">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-primary text-white rounded-md"
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
           >
             {t('retry')}
           </button>
@@ -116,7 +130,11 @@ const OrdersPage = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       <div className="pt-4 px-4 flex items-center">
-        <Link to="/" className="mr-2 p-1 rounded-full bg-secondary">
+        <Link 
+          to="/" 
+          className="mr-2 p-1 rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
+          aria-label="Go back"
+        >
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <h1 className="text-xl font-medium">{t('orders_Orders')}</h1>
@@ -128,8 +146,7 @@ const OrdersPage = () => {
             {orders.map((order) => (
               <div 
                 key={order.id} 
-                className="bg-card rounded-lg shadow-sm p-4 border border-gray-100"
-                onClick={() => navigate(`/order/${order.id}`)}
+                className="bg-card rounded-lg shadow-sm p-4 border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
               >
                 <div className="flex justify-between items-center mb-3">
                   <div className="flex items-center">
@@ -139,47 +156,80 @@ const OrdersPage = () => {
                       {formatDate(order.date, order.time)}
                     </span>
                   </div>
-                  <Badge className={getStatusColor('confirmed')}>
+                  <Badge className={`${getStatusColor(order.status)} hover:opacity-80 transition-opacity`}>
                     <span className="flex items-center">
-                      {getStatusIcon('confirmed')}
-                      <span className="ml-1">Confirmed</span>
+                      {getStatusIcon(order.status)}
+                      <span className="ml-1 capitalize">{order.status}</span>
                     </span>
                   </Badge>
                 </div>
                 
                 <div className="space-y-2 mb-3">
-                  {order.items.length > 0 ? (
-                    order.items.slice(0, 2).map((item, index) => (
-                      <div key={index} className="flex justify-between text-sm">
-                        <span className="truncate max-w-[180px]">{item.productname}</span>
-                        <span>₹{parseFloat(item.amount).toFixed(2)}</span>
+                  {order.items.slice(0, expandedOrder === order.id ? order.items.length : 2).map((item, index) => (
+                    <div key={index} className="flex justify-between text-sm">
+                      <div className="flex flex-col">
+                        <span className="font-medium truncate max-w-[180px]">{item.productname}</span>
+                        <div className="flex items-center text-xs text-muted-foreground mt-1">
+                          <Scale className="h-3 w-3 mr-1" />
+                          <span>Weight: {item.weight}</span>
+                        </div>
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-sm text-muted-foreground">No items details available</div>
-                  )}
+                      <span>₹{parseFloat(item.amount).toFixed(2)}</span>
+                    </div>
+                  ))}
                   
                   {order.items.length > 2 && (
-                    <div className="text-sm text-muted-foreground">
-                      +{order.items.length - 2} more items
-                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleOrderExpand(order.id);
+                      }}
+                      className="text-sm text-primary flex items-center hover:underline"
+                    >
+                      {expandedOrder === order.id ? (
+                        <>
+                          <ChevronUp className="h-4 w-4 mr-1" />
+                          Show Less
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className="h-4 w-4 mr-1" />
+                          Show {order.items.length - 2} more items
+                        </>
+                      )}
+                    </button>
                   )}
                 </div>
                 
                 <div className="pt-3 border-t flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">{t('order_total')}</span>
-                  <span className="font-medium">₹{parseFloat(order.amount).toFixed(2)}</span>
+                  <div className="flex flex-col">
+                    <span className="text-sm text-muted-foreground">{t('order_total')}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {order.items.length} item{order.items.length !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <span className="font-medium text-lg">₹{parseFloat(order.amount).toFixed(2)}</span>
+                </div>
+
+                <div className="mt-3 pt-3 border-t flex justify-end">
+                  <button
+                    onClick={() => navigate(`/order/${order.id}`)}
+                    className="text-sm px-3 py-1 bg-primary/10 text-primary rounded-md hover:bg-primary/20 transition-colors"
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="h-96 flex flex-col items-center justify-center bg-secondary rounded-lg animate-fade-in">
-            <Package className="h-12 w-12 text-muted-foreground mb-2" />
-            <p className="text-muted-foreground">{t('orders_empty')}</p>
+          <div className="h-96 flex flex-col items-center justify-center bg-secondary/20 rounded-lg animate-fade-in p-6 text-center">
+            <Package className="h-16 w-16 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-medium mb-1">{t('orders_empty_title')}</h3>
+            <p className="text-muted-foreground mb-6 max-w-md">{t('orders_empty_description')}</p>
             <Link 
               to="/" 
-              className="mt-4 px-4 py-2 bg-primary text-white rounded-md"
+              className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
             >
               {t('continue_shopping')}
             </Link>

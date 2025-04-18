@@ -23,7 +23,9 @@ interface PricePoint {
   quantity: string;
   price: string;
   mrp: string;
-  original_price?: string;
+  type: string;
+  stock: string;
+  discount_percent: number;
 }
 
 interface Product {
@@ -36,6 +38,7 @@ interface Product {
   price_points: PricePoint[];
   is_best_seller?: boolean;
   is_organic?: boolean;
+  offer?: string;
 }
 
 interface Category {
@@ -56,6 +59,7 @@ interface TransformedProduct {
   price: number;
   mrp: number;
   unit: string;
+  type: string;
   rating: number;
   numReviews: number;
   image: string;
@@ -64,9 +68,23 @@ interface TransformedProduct {
   inStock: boolean;
   isBestSeller: boolean;
   isOrganic: boolean;
-  weightOptions: { value: string; price: number; mrp: number }[];
+  weightOptions: { 
+    value: string; 
+    price: number; 
+    mrp: number; 
+    type: string;
+    stock: number;
+    discountPercent: number;
+  }[];
   allImages: string[];
-  selectedWeight?: { value: string; price: number; mrp: number };
+  selectedWeight?: { 
+    value: string; 
+    price: number; 
+    mrp: number; 
+    type: string;
+    stock: number;
+    discountPercent: number;
+  };
 }
 
 interface CartItem {
@@ -78,6 +96,7 @@ interface CartItem {
   quantity: number;
   image: string;
   weight: string;
+  type: string;
 }
 
 const CategoryProductsPage = () => {
@@ -108,24 +127,31 @@ const CategoryProductsPage = () => {
             price: parseFloat(product.price_points[0]?.price || '0'),
             mrp: parseFloat(product.price_points[0]?.mrp || '0'),
             unit: product.price_points[0]?.quantity || '',
+            type: product.price_points[0]?.type || '',
             rating: 4.0,
             numReviews: 0,
             image: product.images[0]?.image_url || '',
             categoryId: product.category_id,
             subcategoryId: product.subcategory_id,
-            inStock: true,
+            inStock: product.price_points.some(pp => parseInt(pp.stock) > 0),
             isBestSeller: product.is_best_seller || false,
             isOrganic: product.is_organic || false,
             weightOptions: product.price_points.map(pp => ({
               value: pp.quantity,
               price: parseFloat(pp.price),
-              mrp: parseFloat(pp.mrp)
+              mrp: parseFloat(pp.mrp),
+              type: pp.type,
+              stock: parseInt(pp.stock),
+              discountPercent: pp.discount_percent
             })),
             allImages: product.images.map(img => img.image_url),
             selectedWeight: product.price_points[0] ? {
               value: product.price_points[0].quantity,
               price: parseFloat(product.price_points[0].price),
-              mrp: parseFloat(product.price_points[0].mrp)
+              mrp: parseFloat(product.price_points[0].mrp),
+              type: product.price_points[0].type,
+              stock: parseInt(product.price_points[0].stock),
+              discountPercent: product.price_points[0].discount_percent
             } : undefined
           }));
           setProducts(transformed);
@@ -169,7 +195,8 @@ const CategoryProductsPage = () => {
             ...product,
             selectedWeight: selected,
             price: selected ? selected.price : product.price,
-            mrp: selected ? selected.mrp : product.mrp
+            mrp: selected ? selected.mrp : product.mrp,
+            type: selected ? selected.type : product.type
           };
         }
         return product;
@@ -179,6 +206,14 @@ const CategoryProductsPage = () => {
 
   const handleAddToCart = (product: TransformedProduct) => {
     if (!product.selectedWeight) return;
+    if (product.selectedWeight.stock <= 0) {
+      toast({
+        title: "Out of Stock",
+        description: `${product.name} (${product.selectedWeight.value}${product.selectedWeight.type}) is currently out of stock`,
+        variant: "destructive"
+      });
+      return;
+    }
     
     const cartItem: CartItem = {
       id: `${product.id}-${product.selectedWeight.value}`,
@@ -188,14 +223,15 @@ const CategoryProductsPage = () => {
       mrp: product.selectedWeight.mrp,
       quantity: 1,
       image: product.image,
-      weight: product.selectedWeight.value
+      weight: product.selectedWeight.value,
+      type: product.selectedWeight.type
     };
     
     addToCart(cartItem);
     
     toast({
       title: "Added to cart",
-      description: `${product.name} (${product.selectedWeight.value})`,
+      description: `${product.name} (${product.selectedWeight.value}${product.selectedWeight.type})`,
       action: (
         <Button 
           variant="ghost" 
@@ -331,9 +367,14 @@ const CategoryProductsPage = () => {
                         Best Seller
                       </Badge>
                     )}
-                    {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price && (
+                    {product.selectedWeight && product.selectedWeight.discountPercent > 0 && (
                       <Badge variant="destructive" className="absolute top-2 right-2">
-                        {calculateDiscountPercentage(product.selectedWeight.mrp, product.selectedWeight.price)}% OFF
+                        {product.selectedWeight.discountPercent}% OFF
+                      </Badge>
+                    )}
+                    {product.selectedWeight && product.selectedWeight.stock <= 0 && (
+                      <Badge variant="outline" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90">
+                        Out of Stock
                       </Badge>
                     )}
                   </div>
@@ -345,27 +386,26 @@ const CategoryProductsPage = () => {
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex flex-col">
                       <div className="flex items-center">
-                        {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price ? (
+                        {product.selectedWeight && product.selectedWeight.discountPercent > 0 ? (
                           <>
                             <div className="flex flex-col">
                               <span className="font-bold text-lg text-primary">
                                 ₹{product.selectedWeight.price.toFixed(2)}
                               </span>
                               <span className="text-sm text-gray-500">
-  MRP ₹<span className="line-through">{product.selectedWeight.mrp.toFixed(2)}</span>
-</span>
-
+                                MRP ₹<span className="line-through">{product.selectedWeight.mrp.toFixed(2)}</span>
+                              </span>
                             </div>
                           </>
                         ) : (
                           <span className="font-bold text-lg text-primary">
-                            Price ₹{product.selectedWeight?.price.toFixed(2) || product.price.toFixed(2)}
+                            ₹{product.selectedWeight?.price.toFixed(2) || product.price.toFixed(2)}
                           </span>
                         )}
                       </div>
                       {product.selectedWeight && (
                         <span className="text-xs text-gray-500 mt-1">
-                          {product.selectedWeight.value}
+                          {product.selectedWeight.value}{product.selectedWeight.type}
                         </span>
                       )}
                     </div>
@@ -382,21 +422,31 @@ const CategoryProductsPage = () => {
                       onValueChange={(value) => handleWeightChange(product.id, value)}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select size" />
+                        <SelectValue placeholder="Select option" />
                       </SelectTrigger>
                       <SelectContent>
                         {product.weightOptions.map(option => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.value} - 
-                            {option.mrp > option.price ? (
+                          <SelectItem 
+                            key={option.value} 
+                            value={option.value}
+                            disabled={option.stock <= 0}
+                          >
+                            {option.value}{option.type} - 
+                            {option.discountPercent > 0 ? (
                               <>
                                 <span className="text-primary ml-1">₹{option.price.toFixed(2)}</span>
                                 <span className="text-xs text-gray-500 line-through ml-1">
-                                   ₹{option.mrp.toFixed(2)}
+                                  ₹{option.mrp.toFixed(2)}
+                                </span>
+                                <span className="text-xs text-red-500 ml-1">
+                                  ({option.discountPercent}% OFF)
                                 </span>
                               </>
                             ) : (
                               <span className="text-primary ml-1">₹{option.price.toFixed(2)}</span>
+                            )}
+                            {option.stock <= 0 && (
+                              <span className="text-xs text-red-500 ml-1">(Out of Stock)</span>
                             )}
                           </SelectItem>
                         ))}
@@ -408,7 +458,7 @@ const CategoryProductsPage = () => {
                         handleAddToCart(product);
                       }}
                       className="w-full flex items-center gap-2"
-                      disabled={!product.selectedWeight}
+                      disabled={!product.selectedWeight || product.selectedWeight.stock <= 0}
                     >
                       <ShoppingCart className="h-4 w-4" />
                       <span>Add to Cart</span>
@@ -434,9 +484,14 @@ const CategoryProductsPage = () => {
                         Best Seller
                       </Badge>
                     )}
-                    {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price && (
+                    {product.selectedWeight && product.selectedWeight.discountPercent > 0 && (
                       <Badge variant="destructive" className="absolute top-2 right-2">
-                        {calculateDiscountPercentage(product.selectedWeight.mrp, product.selectedWeight.price)}% OFF
+                        {product.selectedWeight.discountPercent}% OFF
+                      </Badge>
+                    )}
+                    {product.selectedWeight && product.selectedWeight.stock <= 0 && (
+                      <Badge variant="outline" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90">
+                        Out of Stock
                       </Badge>
                     )}
                   </div>
@@ -447,11 +502,11 @@ const CategoryProductsPage = () => {
                   </Link>
                   <div className="mt-2 flex flex-col">
                     <div className="flex items-center">
-                      {product.selectedWeight && product.selectedWeight.mrp > product.selectedWeight.price ? (
+                      {product.selectedWeight && product.selectedWeight.discountPercent > 0 ? (
                         <>
                           <div className="flex flex-col">
                             <span className="font-bold text-lg text-primary">
-                              Price ₹{product.selectedWeight.price.toFixed(2)}
+                              ₹{product.selectedWeight.price.toFixed(2)}
                             </span>
                             <span className="text-sm text-gray-500 line-through">
                               MRP ₹{product.selectedWeight.mrp.toFixed(2)}
@@ -460,13 +515,13 @@ const CategoryProductsPage = () => {
                         </>
                       ) : (
                         <span className="font-bold text-lg text-primary">
-                          Price ₹{product.selectedWeight?.price.toFixed(2) || product.price.toFixed(2)}
+                          ₹{product.selectedWeight?.price.toFixed(2) || product.price.toFixed(2)}
                         </span>
                       )}
                     </div>
                     {product.selectedWeight && (
                       <span className="text-xs text-gray-500 mt-1">
-                        {product.selectedWeight.value}
+                        {product.selectedWeight.value}{product.selectedWeight.type}
                       </span>
                     )}
                   </div>
@@ -476,21 +531,31 @@ const CategoryProductsPage = () => {
                       onValueChange={(value) => handleWeightChange(product.id, value)}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select size" />
+                        <SelectValue placeholder="Select option" />
                       </SelectTrigger>
                       <SelectContent>
                         {product.weightOptions.map(option => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.value} - 
-                            {option.mrp > option.price ? (
+                          <SelectItem 
+                            key={option.value} 
+                            value={option.value}
+                            disabled={option.stock <= 0}
+                          >
+                            {option.value}{option.type} - 
+                            {option.discountPercent > 0 ? (
                               <>
                                 <span className="text-primary ml-1">₹{option.price.toFixed(2)}</span>
                                 <span className="text-xs text-gray-500 line-through ml-1">
-                                  MRP ₹{option.mrp.toFixed(2)}
+                                  ₹{option.mrp.toFixed(2)}
+                                </span>
+                                <span className="text-xs text-red-500 ml-1">
+                                  ({option.discountPercent}% OFF)
                                 </span>
                               </>
                             ) : (
                               <span className="text-primary ml-1">₹{option.price.toFixed(2)}</span>
+                            )}
+                            {option.stock <= 0 && (
+                              <span className="text-xs text-red-500 ml-1">(Out of Stock)</span>
                             )}
                           </SelectItem>
                         ))}
@@ -502,7 +567,7 @@ const CategoryProductsPage = () => {
                         handleAddToCart(product);
                       }}
                       className="w-full flex items-center gap-2"
-                      disabled={!product.selectedWeight}
+                      disabled={!product.selectedWeight || product.selectedWeight.stock <= 0}
                     >
                       <ShoppingCart className="h-4 w-4" />
                       <span>Add to Cart</span>

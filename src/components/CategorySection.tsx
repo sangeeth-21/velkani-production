@@ -3,9 +3,22 @@ import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
+interface Category {
+  id: string;
+  name: string;
+  image_url: string;
+  subcategories: Subcategory[];
+}
+
+interface Subcategory {
+  id: string;
+  name: string;
+  category_id: string;
+}
+
 const CategorySection = () => {
   const { t } = useLanguage();
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -18,7 +31,7 @@ const CategorySection = () => {
 
           // Fetch subcategories for each category
           const categoriesWithSub = await Promise.all(
-            fetchedCategories.map(async (category) => {
+            fetchedCategories.map(async (category: any) => {
               try {
                 const subRes = await fetch(`https://srivelkanistore.site/api/index.php?action=get_subcategories&category_id=${category.id}`);
                 const subJson = await subRes.json();
@@ -36,7 +49,10 @@ const CategorySection = () => {
             })
           );
 
-          setCategories(categoriesWithSub);
+          // Simply reverse the array to show last fetched first
+          const reversedCategories = [...categoriesWithSub].reverse();
+          
+          setCategories(reversedCategories);
         }
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -56,8 +72,8 @@ const CategorySection = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {categories.slice(0, 5).map((category, index) => (
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        {categories.map((category, index) => (
           <Link
             key={category.id}
             to={`/category/${category.id}`}
@@ -69,6 +85,7 @@ const CategorySection = () => {
                 src={category.image_url} 
                 alt={category.name} 
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <span className="text-sm text-center">{category.name}</span>
